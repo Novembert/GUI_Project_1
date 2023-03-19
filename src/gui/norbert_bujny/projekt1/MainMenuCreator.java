@@ -3,16 +3,13 @@ package gui.norbert_bujny.projekt1;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class MainMenuCreator {
-    private MenuCommandsReceiver receiver;
-
+public final class MainMenuCreator extends GenericMenuCreator<MenuCommandsReceiver> {
     MainMenuCreator(MenuCommandsReceiver receiver) {
-    this.receiver = receiver;
+        super(receiver);
     }
 
-
     public MenuList createMenuList() {
-        MenuList mainMenu = new MenuList();
+        MenuList mainMenu = new MenuList("Menu główne");
 
         mainMenu.menuItems.add( new MenuItem(1, "Lokomotywy", new Command() {
             @Override

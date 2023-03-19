@@ -1,18 +1,13 @@
 package gui.norbert_bujny.projekt1;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public final class TrainsMenuCreator {
-    private TrainsCommandsReceiver receiver;
-
+public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsReceiver> {
     TrainsMenuCreator(TrainsCommandsReceiver receiver) {
-        this.receiver = receiver;
+        super(receiver);
     }
 
 
     public MenuList createMenuList() {
-        MenuList mainMenu = new MenuList();
+        MenuList mainMenu = new MenuList("Pociągi");
 
         mainMenu.menuItems.add( new MenuItem(1, "Menu glowne", new Command() {
             @Override
