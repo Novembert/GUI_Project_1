@@ -19,7 +19,7 @@ public class MenuList {
     }
 
     private void printMenuName(){
-        System.out.println("*** " + this.menuName + " ***");
+        System.out.println("\n*** " + this.menuName + " ***");
     }
 
     private void drawSubmenu() {
@@ -31,11 +31,11 @@ public class MenuList {
 //    TODO maybe switch to utility function?
     private void handleUserInput() {
         Scanner scanner = new Scanner(System.in);
-        Integer choice = scanner.nextInt();
-
-        if (choice > 0 && choice <= menuItems.size()) {
+        try {
+            Integer choice = scanner.nextInt();
             menuItems.get(choice - 1).executeAction();
-        } else {
+        } catch (Exception e) {
+            System.out.println("Nie ma takiej opcji w menu.");
             this.runMenuList();
         }
     }

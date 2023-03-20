@@ -19,6 +19,7 @@ public final class StationsMenuCreator extends GenericMenuCreator<StationsComman
             @Override
             public void execute() {
                 receiver.initializeCreateStation();
+                receiver.switchSubmenu("main");
             }
         }));
 
@@ -26,6 +27,7 @@ public final class StationsMenuCreator extends GenericMenuCreator<StationsComman
             @Override
             public void execute() {
                 receiver.initializeDeleteStation();
+                receiver.switchSubmenu("main");
             }
         }));
 

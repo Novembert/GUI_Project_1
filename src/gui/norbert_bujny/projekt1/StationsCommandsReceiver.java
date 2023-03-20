@@ -24,12 +24,14 @@ public class StationsCommandsReceiver extends MenuCommandsReceiver {
         } else {
             this.stationsMap.addStationToList(newStation);
         }
-
-        this.switchSubmenu("main");
     }
 
     public void initializeDeleteStation() {
-        this.stationsMap.removeStationFromList(Utilities.handleUserRequiredInput("Podaj kod miasta: "));
-        this.switchSubmenu("main");
+        try {
+            this.stationsMap.removeStationFromList(Utilities.handleUserRequiredInput("Podaj kod miasta: "));
+        } catch (StationNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }

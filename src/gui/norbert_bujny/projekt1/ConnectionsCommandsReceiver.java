@@ -14,22 +14,34 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
         String code = Utilities.handleUserRequiredInput("Podaj kod stacji startowej: ");
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
 
-        this.stationsMap.addConnection(code, targetCode);
+        try {
+            this.stationsMap.addConnection(code, targetCode);
+        } catch (StationNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void initializeMultipleConnectionsCreator() {
         String code = Utilities.handleUserRequiredInput("Podaj kod stacji startowej: ");
         List<String> targetCodes = Utilities.handleUserRequiredListInput("Podaj kody stacji docelowych (oddzielone przecinkiem): ");
 
-        this.stationsMap.addMultipleConnections(code, targetCodes);
+        try {
+            this.stationsMap.addMultipleConnections(code, targetCodes);
+        } catch (StationNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void initializeConnectingToMultipleSourceStations() {
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
         List<String> codes = Utilities.handleUserRequiredListInput("Podaj kody stacji startowych (oddzielone przecinkiem): ");
 
-        for (String code : codes) {
-            this.stationsMap.addConnection(code, targetCode);
+        try {
+            for (String code : codes) {
+                this.stationsMap.addConnection(code, targetCode);
+            }
+        } catch (StationNotFoundException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -37,6 +49,10 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
         String code = Utilities.handleUserRequiredInput("Podaj kod stacji startowej: ");
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
 
-        System.out.println(this.stationsMap.findPath(code, targetCode));
+        try {
+            System.out.println("Trasa: " + this.stationsMap.findPath(code, targetCode));
+        } catch (StationNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

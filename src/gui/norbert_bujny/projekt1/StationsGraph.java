@@ -37,7 +37,7 @@ public class StationsGraph {
         }
     }
 
-    public void removeStationFromList(Station station) {
+    public void removeStationFromList(Station station) throws StationNotFoundException {
         for (Station savedStation : stationsConnections.keySet()) {
             if (stationsConnections.get(savedStation).contains(station)) {
                 this.removeConnection(savedStation, station);
@@ -47,7 +47,7 @@ public class StationsGraph {
         stationsConnections.remove(station);
     }
 
-    public void removeStationFromList(String code) {
+    public void removeStationFromList(String code) throws StationNotFoundException {
         Station stationToDelete = this.searchStationByCode(code);
 
         this.removeStationFromList(stationToDelete);
@@ -58,14 +58,14 @@ public class StationsGraph {
         this.stationsConnections.get(targetStation).add(station);
     }
 
-    public void addConnection(String code, String targetCode) {
+    public void addConnection(String code, String targetCode) throws StationNotFoundException {
         Station station = this.searchStationByCode(code);
         Station targetStation = this.searchStationByCode(targetCode);
 
         this.addConnection(station, targetStation);
     }
 
-    public void addMultipleConnections(String code, List<String> targetCodes) {
+    public void addMultipleConnections(String code, List<String> targetCodes) throws StationNotFoundException {
         for (String targetCode : targetCodes) {
             this.addConnection(code, targetCode);
         }
@@ -76,7 +76,7 @@ public class StationsGraph {
     }
 
 //    TODO FIX!
-    public Set<Station> findPath(String code, String targetStationCode) {
+    public Set<Station> findPath(String code, String targetStationCode) throws StationNotFoundException {
         Station station = this.searchStationByCode(code);
         Station targetStation = this.searchStationByCode(targetStationCode);
 
@@ -89,16 +89,19 @@ public class StationsGraph {
         while (!queue.isEmpty()) {
             Station currentStation = queue.poll();
             for (Station st : this.stationsConnections.get(currentStation)) {
-                if (!visited.contains(st)) {
+                if (!visited.contains(targetStation)) {
                     visited.add(st);
                     queue.add(st);
+                } else {
+                    visited.add(st);
+                    break;
                 }
             }
         }
         return visited;
     }
 
-    private Station searchStationByCode(String code) {
+    private Station searchStationByCode(String code) throws StationNotFoundException {
         Set<Station> stationsSet = this.stationsConnections.keySet();
 
         for (Station station : stationsSet) {
@@ -107,6 +110,7 @@ public class StationsGraph {
             }
         }
 
-        return null;
+        throw new StationNotFoundException("Nie znaleziono stacji");
     }
 }
+
