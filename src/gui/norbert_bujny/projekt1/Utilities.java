@@ -55,4 +55,8 @@ public abstract class Utilities {
     public static List<String> parseSeparatedStringToList(String str, String separator) {
         return Arrays.asList(str.split("\\s*" + separator + "\\s*"));
     }
+
+    public static String getPolishTranslationForBooleanValues(Boolean value) {
+        return value ? "Tak" : "Nie";
+    }
 }
