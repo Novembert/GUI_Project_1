@@ -7,6 +7,13 @@ public class HeavyFreightCar extends FreightCar {
 
     public HeavyFreightCar() {
         super(false);
+        this.initializeCar();
+    }
+
+    private void initializeCar() {
+        MenuCompatibleEnumWrapper<CargoProtection> enumWrapper = new MenuCompatibleEnumWrapper<>(CargoProtection.values());
+
+        this.cargoProtection = Utilities.handleUserRequiredEnumSetInput("", enumWrapper).getChosenOptions();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package gui.norbert_bujny.projekt1;
 
-import java.util.List;
-
-public class PassengerCar extends Car {
+public class PassengerCar extends BaseCar {
     private Boolean hasToilet;
     private Integer seats;
     private PassengerCarClass carClass;
@@ -10,22 +8,17 @@ public class PassengerCar extends Car {
 
     public PassengerCar() {
         super(true);
+        this.initializeCar();
     }
 
-    public void setHasToilet(Boolean hasToilet) {
-        this.hasToilet = hasToilet;
-    }
+    private void initializeCar() {
+        MenuCompatibleEnumWrapper<PassengerCarClass> enumWrapper = new MenuCompatibleEnumWrapper<>(PassengerCarClass.values());
 
-    public void setSeats(Integer seats) {
-        this.seats = seats;
-    }
-
-    public void setCarClass(PassengerCarClass carClass) {
-        this.carClass = carClass;
-    }
-
-    public void setHasCompartments(Boolean hasCompartments) {
-        this.hasCompartments = hasCompartments;
+        this.carClass = (PassengerCarClass) Utilities.handleUserRequiredEnumInput("Klasa: ", enumWrapper).getChosenOption();
+        this.seats = Integer.parseInt(Utilities.handleUserRequiredInput("Ilość miejsc siedzących: "));
+        this.hasCompartments = Utilities.handleUserRequiredBooleanInput("Czy ma przedziały?");
+        this.hasToilet = Utilities.handleUserRequiredBooleanInput("Czy posiada toaletę?");
+        ;
     }
 
     @Override

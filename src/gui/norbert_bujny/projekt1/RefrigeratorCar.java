@@ -2,10 +2,16 @@ package gui.norbert_bujny.projekt1;
 
 public class RefrigeratorCar extends FreightCar {
     private Boolean hasShelves;
-    private Number celsiusDegrees;
+    private double celsiusDegrees;
 
     public RefrigeratorCar() {
         super(true);
+        this.initializeCar();
+    }
+
+    private void initializeCar() {
+        this.hasShelves = Utilities.handleUserRequiredBooleanInput("Czy ma pólki? ");
+        this.celsiusDegrees = Double.parseDouble(Utilities.handleUserRequiredInput("Temperatura (°C)"));
     }
 
     @Override

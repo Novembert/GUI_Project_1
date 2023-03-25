@@ -7,10 +7,13 @@ public class LuggagePostCar extends PostCar {
 
     public LuggagePostCar() {
         super(false);
+        this.initializeCar();
     }
 
-    public void setAllowedLuggageTypes(Set<LuggageTypes> allowedLuggageTypes) {
-        this.allowedLuggageTypes = allowedLuggageTypes;
+    private void initializeCar() {
+        MenuCompatibleEnumWrapper<LuggageTypes> enumWrapper = new MenuCompatibleEnumWrapper<>(LuggageTypes.values());
+
+        this.allowedLuggageTypes = Utilities.handleUserRequiredEnumSetInput("Dozwolone typy bagażu:", enumWrapper).getChosenOptions();
     }
 
     @Override

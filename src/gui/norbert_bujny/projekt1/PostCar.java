@@ -2,24 +2,25 @@ package gui.norbert_bujny.projekt1;
 
 import java.util.Set;
 
-public class PostCar extends Car {
-   private Integer maxParcelsCount;
-   private Set<ParcelsTypes> allowedParcelsTypes;
+public class PostCar extends BaseCar {
+    private int maxParcelsCount;
+    private Set<ParcelsTypes> allowedParcelsTypes;
 
     public PostCar() {
         super(true);
+        this.initializeCar();
     }
 
     public PostCar(Boolean needsElectricity) {
         super(needsElectricity);
+        this.initializeCar();
     }
 
-    public void setAllowedParcelsTypes(Set<ParcelsTypes> allowedParcelsTypes) {
-        this.allowedParcelsTypes = allowedParcelsTypes;
-    }
+    private void initializeCar() {
+        MenuCompatibleEnumWrapper<ParcelsTypes> enumWrapper = new MenuCompatibleEnumWrapper<>(ParcelsTypes.values());
 
-    public void setMaxParcelsCount(Integer maxParcelsCount) {
-        this.maxParcelsCount = maxParcelsCount;
+        this.allowedParcelsTypes = Utilities.handleUserRequiredEnumSetInput("Obsługiwane typy przesyłek:", enumWrapper).getChosenOptions();
+        this.maxParcelsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna ilość przesyłek: "));
     }
 
     @Override
