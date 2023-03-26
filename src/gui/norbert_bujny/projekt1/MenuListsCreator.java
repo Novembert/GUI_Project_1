@@ -8,12 +8,14 @@ public final class MenuListsCreator {
     TrainsMenuCreator tmCreator;
     StationsMenuCreator smCreator;
     ConnectionsMenuCreator cmCreator;
+    CarsMenuCreator carsMenuCreator;
 
     public MenuListsCreator(App appReference) {
         this.mmCreator = new MainMenuCreator(new MenuCommandsReceiver(appReference));
         this.tmCreator = new TrainsMenuCreator(new TrainsCommandsReceiver(appReference));
         this.smCreator = new StationsMenuCreator(new StationsCommandsReceiver(appReference));
         this.cmCreator = new ConnectionsMenuCreator(new ConnectionsCommandsReceiver(appReference));
+        this.carsMenuCreator = new CarsMenuCreator(new CarsCommandsReceiver(appReference));
     }
 
     public Map<String, MenuList> createMenuLists() {
@@ -23,6 +25,7 @@ public final class MenuListsCreator {
         menuListsMap.put("trains", tmCreator.createMenuList());
         menuListsMap.put("stations", smCreator.createMenuList());
         menuListsMap.put("connections", cmCreator.createMenuList());
+        menuListsMap.put("cars", carsMenuCreator.createMenuList());
 
         return menuListsMap;
     }

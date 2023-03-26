@@ -21,7 +21,7 @@ public final class MainMenuCreator extends GenericMenuCreator<MenuCommandsReceiv
         mainMenu.menuItems.add( new MenuItem(2, "Wagony", new Command() {
             @Override
             public void execute() {
-                receiver.switchSubmenu("carriages");
+                receiver.switchSubmenu("cars");
             }
         }));
 

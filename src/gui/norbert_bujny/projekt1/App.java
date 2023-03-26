@@ -1,11 +1,13 @@
 package gui.norbert_bujny.projekt1;
 
 import java.util.List;
+import java.util.Map;
 
 public final class App {
     private static App instance;
 
     private StationsGraph stationsMap;
+    private CarsCollection carsCollection;
     private AppConfig appConfig;
     private Menu menu;
 
@@ -29,12 +31,16 @@ public final class App {
         this.appConfig.readConfig();
 
         ModuleConfig mapConfig = this.appConfig.findModuleConfig("map");
+        ModuleConfig carsConfig = this.appConfig.findModuleConfig("cars");
 
-        if (mapConfig.getConfigRows().size() > 0) this.stationsMap = new StationsGraph(mapConfig);
+        if (mapConfig != null && mapConfig.getConfigRows().size() > 0) this.stationsMap = new StationsGraph(mapConfig);
+        if (carsConfig != null && carsConfig.getConfigRows().size() > 0)
+            this.carsCollection = new CarsCollection(carsConfig);
     }
 
     public void initialize() {
         if (this.stationsMap == null) this.stationsMap = new StationsGraph();
+        if (this.carsCollection == null) this.carsCollection = new CarsCollection();
 
         this.initializeMenus();
     }
@@ -47,7 +53,11 @@ public final class App {
         return  this.menu;
     }
 
-    public StationsGraph getStationsMap () {
+    public StationsGraph getStationsMap() {
         return this.stationsMap;
+    }
+
+    public CarsCollection getCarsCollection() {
+        return this.carsCollection;
     }
 }

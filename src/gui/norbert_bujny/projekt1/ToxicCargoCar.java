@@ -1,12 +1,27 @@
 package gui.norbert_bujny.projekt1;
 
+import java.util.Objects;
+
 public class ToxicCargoCar extends HeavyFreightCar {
     private PollutionLevel pollutionLevel;
     public String howToNeutralize;
 
     public ToxicCargoCar() {
-        super();
+        super(CarTypes.TOXIC_CARGO_CAR);
         this.initializeCar();
+    }
+
+    public ToxicCargoCar(CarTypes carType) {
+        super(carType);
+        this.initializeCar();
+    }
+
+    public ToxicCargoCar(ToxicCargoCar otherCar) {
+        super(otherCar);
+        if (otherCar != null) {
+            this.pollutionLevel = otherCar.pollutionLevel;
+            this.howToNeutralize = otherCar.howToNeutralize;
+        }
     }
 
     private void initializeCar() {
@@ -21,5 +36,24 @@ public class ToxicCargoCar extends HeavyFreightCar {
         return super.toString()
                 + ",\nPoziom skażenia: " + this.pollutionLevel
                 + ",\nJak neutralizować: " + this.howToNeutralize;
+    }
+
+    @Override
+    public BaseCar clone() {
+        return new ToxicCargoCar(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ToxicCargoCar that = (ToxicCargoCar) o;
+        return pollutionLevel == that.pollutionLevel && Objects.equals(howToNeutralize, that.howToNeutralize);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), pollutionLevel, howToNeutralize);
     }
 }
