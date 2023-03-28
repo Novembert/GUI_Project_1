@@ -8,6 +8,7 @@ public final class App {
 
     private StationsGraph stationsMap;
     private CarsCollection carsCollection;
+    private Saves saves;
     private AppConfig appConfig;
     private Menu menu;
 
@@ -27,20 +28,10 @@ public final class App {
         return instance;
     }
 
-    public void setup() {
-        this.appConfig.readConfig();
-
-        ModuleConfig mapConfig = this.appConfig.findModuleConfig("map");
-        ModuleConfig carsConfig = this.appConfig.findModuleConfig("cars");
-
-        if (mapConfig != null && mapConfig.getConfigRows().size() > 0) this.stationsMap = new StationsGraph(mapConfig);
-        if (carsConfig != null && carsConfig.getConfigRows().size() > 0)
-            this.carsCollection = new CarsCollection(carsConfig);
-    }
-
     public void initialize() {
-        if (this.stationsMap == null) this.stationsMap = new StationsGraph();
-        if (this.carsCollection == null) this.carsCollection = new CarsCollection();
+        this.stationsMap = new StationsGraph();
+        this.carsCollection = new CarsCollection();
+        this.saves = new Saves();
 
         this.initializeMenus();
     }
@@ -50,11 +41,15 @@ public final class App {
     }
 
     public Menu getMenu() {
-        return  this.menu;
+        return this.menu;
     }
 
     public StationsGraph getStationsMap() {
         return this.stationsMap;
+    }
+
+    public Saves getSaves() {
+        return this.saves;
     }
 
     public CarsCollection getCarsCollection() {

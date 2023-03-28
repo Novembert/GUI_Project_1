@@ -11,7 +11,7 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
     }
 
     public void printCarsList() {
-        System.out.println(this.carsCollection.getCarsList());
+        System.out.println(this.carsCollection.getItemsList());
     }
 
     public void initializeCarsCreator() {
@@ -19,7 +19,7 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
 
         CarTypes chosenCarType = (CarTypes) Utilities.handleUserRequiredEnumSetInput("Typ wagonu: ", enumWrapper).getChosenOption();
         try {
-            this.carsCollection.addCar((BaseCar) Class.forName(this.carsTypes.map.get(chosenCarType)).getConstructor().newInstance());
+            this.carsCollection.addItem((BaseCar) Class.forName(this.carsTypes.map.get(chosenCarType)).getConstructor().newInstance());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -27,11 +27,11 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
 
     public void initializeCarCopier() {
         String carToCopyID = Utilities.handleUserRequiredInput("Podaj ID wagonu");
-        this.carsCollection.addCar(this.carsCollection.getCar(carToCopyID).clone());
+        this.carsCollection.addItem(this.carsCollection.getItem(carToCopyID).clone());
     }
 
     public void initializeCarDelete() {
         String carToDeleteId = Utilities.handleUserRequiredInput("Podaj ID wagonu");
-        this.carsCollection.deleteCar(carToDeleteId);
+        this.carsCollection.deleteItem(carToDeleteId);
     }
 }

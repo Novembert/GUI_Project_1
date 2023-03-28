@@ -1,8 +1,9 @@
 package gui.norbert_bujny.projekt1;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Station {
+public class Station implements Serializable {
     private final String name;
     private final String code;
 

@@ -1,8 +1,9 @@
 package gui.norbert_bujny.projekt1;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class BaseCar {
+public abstract class BaseCar implements IdRepresentedItem, Serializable {
     //    TODO kim jest nadawca wagonu?
     private double netWeight;
     private double grossWeight;
@@ -33,6 +34,7 @@ public abstract class BaseCar {
         }
     }
 
+    @Override
     public String getID() {
         return ID;
     }

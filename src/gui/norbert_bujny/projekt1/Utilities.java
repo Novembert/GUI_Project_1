@@ -49,6 +49,19 @@ public abstract class Utilities {
         return result;
     }
 
+    public static String handleUserRequiredStringListInput(String prompt, List<String> options) {
+        System.out.println(prompt);
+
+        Utilities.printListOptions(options);
+
+        int chosenOption;
+        do {
+            chosenOption = Integer.parseInt(Utilities.handleUserRequiredInput("Wybierz opcję: "));
+        } while (chosenOption < 1 || chosenOption > options.size());
+
+        return options.get(chosenOption - 1);
+    }
+
     public static MenuCompatibleEnumWrapper handleUserRequiredEnumInput(String prompt, MenuCompatibleEnumWrapper enumWrapper) {
         System.out.println(prompt);
 
@@ -87,6 +100,15 @@ public abstract class Utilities {
 
         for (Enum option : options) {
             System.out.println("[" + optionIndex + "] " + option.toString());
+            optionIndex++;
+        }
+    }
+
+    private static void printListOptions(List<String> options) {
+        int optionIndex = 1;
+
+        for (String option : options) {
+            System.out.println("[" + optionIndex + "] " + option);
             optionIndex++;
         }
     }

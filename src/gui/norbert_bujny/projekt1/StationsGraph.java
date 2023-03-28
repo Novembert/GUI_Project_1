@@ -2,10 +2,10 @@ package gui.norbert_bujny.projekt1;
 
 // https://www.baeldung.com/java-graphs
 
+import java.io.Serializable;
 import java.util.*;
 
-public class StationsGraph {
-//    TODO read why final
+public class StationsGraph implements Serializable {
     private final Map<Station, List<Station>> stationsConnections;
 
     StationsGraph() {
@@ -37,7 +37,7 @@ public class StationsGraph {
         }
     }
 
-    public void removeStationFromList(Station station) throws StationNotFoundException {
+    public void removeStationFromList(Station station) {
         for (Station savedStation : stationsConnections.keySet()) {
             if (stationsConnections.get(savedStation).contains(station)) {
                 this.removeConnection(savedStation, station);
@@ -80,8 +80,8 @@ public class StationsGraph {
         Station station = this.searchStationByCode(code);
         Station targetStation = this.searchStationByCode(targetStationCode);
 
-        Set<Station> visited = new LinkedHashSet<Station>();
-        Queue<Station> queue = new LinkedList<Station>();
+        Set<Station> visited = new LinkedHashSet<>();
+        Queue<Station> queue = new LinkedList<>();
 
         queue.add(station);
         visited.add(station);
@@ -111,6 +111,13 @@ public class StationsGraph {
         }
 
         throw new StationNotFoundException("Nie znaleziono stacji");
+    }
+
+    @Override
+    public String toString() {
+        return "StationsGraph{" +
+                "stationsConnections=" + stationsConnections +
+                '}';
     }
 }
 

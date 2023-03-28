@@ -32,10 +32,17 @@ public final class MainMenuCreator extends GenericMenuCreator<MenuCommandsReceiv
             }
         }));
 
-        mainMenu.menuItems.add( new MenuItem(4, "Polaczenia", new Command() {
+        mainMenu.menuItems.add(new MenuItem(4, "Polaczenia", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("connections");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(5, "Wczytaj/Zapisz", new Command() {
+            @Override
+            public void execute() {
+                receiver.switchSubmenu("saves");
             }
         }));
 
