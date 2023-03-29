@@ -28,7 +28,6 @@ public class MenuList {
         }
     }
 
-//    TODO maybe switch to utility function?
     private void handleUserInput() {
         Scanner scanner = new Scanner(System.in);
         try {

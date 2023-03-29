@@ -27,7 +27,7 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
     public void readState() {
         List<String> savesNames = this.saves.listExistingSaves();
 
-        this.saves.readSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): "));
+        this.saves.readSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames));
     }
 
     public void overrideState() {

@@ -2,11 +2,10 @@ package gui.norbert_bujny.projekt1;
 
 // https://www.baeldung.com/java-graphs
 
-import java.io.Serializable;
 import java.util.*;
 
-public class StationsGraph implements Serializable {
-    private final Map<Station, List<Station>> stationsConnections;
+public class StationsGraph {
+    private Map<Station, List<Station>> stationsConnections;
 
     StationsGraph() {
         this.stationsConnections = new HashMap<>();
@@ -20,6 +19,14 @@ public class StationsGraph implements Serializable {
             Station newStation = new Station(configRow.get(0), configRow.get(1));
             this.addStationToList(newStation, Utilities.parseCommaSeparatedStringToList(configRow.get(2)));
         }
+    }
+
+    public void setStationsConnections(Map<Station, List<Station>> stationsConnections) {
+        this.stationsConnections = stationsConnections;
+    }
+
+    public Map<Station, List<Station>> getStationsConnections() {
+        return this.stationsConnections;
     }
 
     public void addStationToList(Station station) {
@@ -111,13 +118,6 @@ public class StationsGraph implements Serializable {
         }
 
         throw new StationNotFoundException("Nie znaleziono stacji");
-    }
-
-    @Override
-    public String toString() {
-        return "StationsGraph{" +
-                "stationsConnections=" + stationsConnections +
-                '}';
     }
 }
 

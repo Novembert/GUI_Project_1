@@ -1,5 +1,6 @@
 package gui.norbert_bujny.projekt1;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,10 +28,11 @@ public class MapWrapper<T extends IdRepresentedItem> {
         this.map.remove(ID);
     }
 
-    @Override
-    public String toString() {
-        return "MapWrapper{" +
-                "map=" + map +
-                '}';
+    public void setMap(Map<String, T> map) {
+        this.map = map;
+    }
+
+    public Map<String, T> getMap() {
+        return this.map;
     }
 }

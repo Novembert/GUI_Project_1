@@ -1,9 +1,6 @@
 package gui.norbert_bujny.projekt1;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +8,11 @@ import java.util.Map;
 public class Saves {
     private Map<String, File> saves;
     private final File rootSavesDirectory;
+    private App appInstance;
 
     public Saves() {
         this.rootSavesDirectory = new File("saves");
+        this.appInstance = App.getInstance();
 
         if (!this.rootSavesDirectory.exists()) {
             this.rootSavesDirectory.mkdir();
@@ -31,14 +30,18 @@ public class Saves {
         File saveDirectory = new File(this.rootSavesDirectory + "/" + saveName);
         if (saveDirectory.mkdir()) {
             try {
-                FileOutputStream fos = new FileOutputStream(this.rootSavesDirectory + "/" + saveName + "/stations");
+                FileOutputStream fos = new FileOutputStream(saveDirectory.getPath() + "/stations");
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(stations);
+                oos.writeObject(stations.getStationsConnections());
 
-//                  TODO
-//                fos = new FileOutputStream(this.rootSavesDirectory + "/" + saveName + "/cars");
-//                oos = new ObjectOutputStream(fos);
-//                oos.writeObject(cars);
+                fos = new FileOutputStream(saveDirectory.getPath() + "/cars");
+                oos = new ObjectOutputStream(fos);
+                oos.writeObject(cars.getMap());
+
+                oos.close();
+                fos.close();
+
+                this.saves.put(saveName, saveDirectory);
             } catch (Exception e) {
                 System.out.println("Nie udało się zapisać stanu aplikacji.");
                 throw new RuntimeException(e);
@@ -49,7 +52,24 @@ public class Saves {
     }
 
     public void readSave(String saveName) {
-//        TODO odczyt
+        File saveDirectory = this.saves.get(saveName);
+        if (saveDirectory.exists()) {
+            try {
+                FileInputStream fis = new FileInputStream(saveDirectory.getPath() + "/cars");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                this.appInstance.getCarsCollection().setMap((Map<String, BaseCar>) ois.readObject());
+
+                fis = new FileInputStream(saveDirectory.getPath() + "/stations");
+                ois = new ObjectInputStream(fis);
+                this.appInstance.getStationsMap().setStationsConnections((Map<Station, List<Station>>) ois.readObject());
+
+                fis.close();
+                ois.close();
+            } catch (Exception e) {
+                System.out.println("Nie udało się odczytać stanu aplikacji.");
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private Map<String, File> findExistingSaves(File rootDirectory) {

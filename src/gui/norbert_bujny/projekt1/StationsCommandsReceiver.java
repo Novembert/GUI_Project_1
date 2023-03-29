@@ -11,7 +11,6 @@ public class StationsCommandsReceiver extends MenuCommandsReceiver {
     }
 
     public void initializeCreateStation() {
-//        TODO maybe move it to a builder class?
         String name = Utilities.handleUserRequiredInput("Podaj nazwę: ");
         String code = Utilities.handleUserRequiredInput("Podaj kod: ");
 

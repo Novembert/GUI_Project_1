@@ -23,6 +23,14 @@ public class SavesMenuCreator extends GenericMenuCreator<SavesMenuReceiver> {
             }
         }));
 
+        savesMenu.menuItems.add(new MenuItem(3, "Wczytaj zapis", new Command() {
+            @Override
+            public void execute() {
+                receiver.readState();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
         return savesMenu;
     }
 }
