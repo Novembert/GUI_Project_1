@@ -35,7 +35,7 @@ public class PassengerCar extends BaseCar {
         this.seats = Integer.parseInt(Utilities.handleUserRequiredInput("Ilość miejsc siedzących: "));
         this.hasCompartments = Utilities.handleUserRequiredBooleanInput("Czy ma przedziały?");
         this.hasToilet = Utilities.handleUserRequiredBooleanInput("Czy posiada toaletę?");
-        ;
+
     }
 
     @Override
