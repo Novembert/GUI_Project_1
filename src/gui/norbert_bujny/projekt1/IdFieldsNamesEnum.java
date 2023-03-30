@@ -4,7 +4,7 @@ public enum IdFieldsNamesEnum {
     CAR_ID("carID"),
     TRAIN_ID("trainID");
 
-    private String value;
+    private final String value;
 
     private IdFieldsNamesEnum(String value) {
         this.value = value;

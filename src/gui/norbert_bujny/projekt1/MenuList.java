@@ -31,7 +31,7 @@ public class MenuList {
     private void handleUserInput() {
         Scanner scanner = new Scanner(System.in);
         try {
-            Integer choice = scanner.nextInt();
+            int choice = scanner.nextInt();
             menuItems.get(choice - 1).executeAction();
         } catch (Exception e) {
             System.out.println("Nie ma takiej opcji w menu.");

@@ -5,7 +5,7 @@ public enum CargoProtection {
     SAFETY_NET("Siatka"),
     SECURITY_BARS("Metalowe kraty");
 
-    private String value;
+    private final String value;
 
     private CargoProtection(String value) {
         this.value = value;

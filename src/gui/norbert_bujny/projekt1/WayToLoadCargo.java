@@ -4,7 +4,7 @@ public enum WayToLoadCargo {
     SIDE_LOAD("Od boku"),
     TOP_LOAD("Od góry");
 
-    private String value;
+    private final String value;
     private WayToLoadCargo(String value) {
         this.value = value;
     }

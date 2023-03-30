@@ -22,8 +22,6 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
         this.initializeCar();
     }
 
-    ;
-
     public BaseCar(BaseCar otherCar) {
         if (otherCar != null) {
             this.netWeight = otherCar.netWeight;

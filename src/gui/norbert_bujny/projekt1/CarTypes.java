@@ -15,7 +15,7 @@ public enum CarTypes {
     TOXIC_CARGO_CAR("Wagon na materiały toksyczne"),
     FLUID_TOXIC_CARGO_CAR("Wagon na ciekłe materiały toksyczne");
 
-    private String value;
+    private final String value;
 
     private CarTypes(String value) {
         this.value = value;

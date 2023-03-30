@@ -1,19 +1,14 @@
 package gui.norbert_bujny.projekt1;
 
-import java.util.List;
-import java.util.Map;
-
 public final class App {
     private static App instance;
 
     private StationsGraph stationsMap;
     private CarsCollection carsCollection;
     private Saves saves;
-    private AppConfig appConfig;
     private Menu menu;
 
     private App() {
-        this.appConfig = new AppConfig();
     }
 
     private void initializeMenus() {

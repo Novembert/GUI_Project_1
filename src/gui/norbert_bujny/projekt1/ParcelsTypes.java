@@ -6,7 +6,7 @@ public enum ParcelsTypes{
     SMALL("Małe"),
     ENVELOPE("Koperty");
 
-    private String value;
+    private final String value;
     private ParcelsTypes(String value) {
         this.value = value;
     }

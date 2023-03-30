@@ -5,7 +5,7 @@ public enum PotentialExplosionPower {
     MEDIUM("<4kt; 8kt)"),
     HIGH("<8kt; ∞)");
 
-    private String value;
+    private final String value;
     private PotentialExplosionPower(String value) {
         this.value = value;
     }

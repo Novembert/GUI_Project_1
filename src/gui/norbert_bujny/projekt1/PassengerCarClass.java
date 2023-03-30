@@ -4,7 +4,7 @@ public enum PassengerCarClass {
     FIRST("Pierwsza"),
     SECOND("Druga");
 
-    private String value;
+    private final String value;
     private PassengerCarClass(String value) {
         this.value = value;
     }

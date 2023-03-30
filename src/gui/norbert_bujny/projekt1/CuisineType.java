@@ -9,7 +9,7 @@ public enum CuisineType {
     KOREAN("Koreańska"),
     FUSION("Fusion");
 
-    private String value;
+    private final String value;
     private CuisineType(String value) {
         this.value = value;
     }

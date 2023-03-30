@@ -19,8 +19,6 @@ public class MenuCompatibleEnumWrapper<T extends Enum> {
         this.chosenOptions.add(this.wrappedEnumClassValues.get(optionIndex));
     }
 
-    ;
-
     public T getChosenOption() {
         return (T) this.chosenOptions.toArray()[0];
     }

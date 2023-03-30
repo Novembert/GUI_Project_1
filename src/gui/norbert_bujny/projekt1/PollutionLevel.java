@@ -5,7 +5,7 @@ public enum PollutionLevel {
     MEDIUM("Średnie"),
     HIGH("Duże");
 
-    private String value;
+    private final String value;
     private PollutionLevel(String value) {
         this.value = value;
     }

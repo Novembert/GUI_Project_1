@@ -6,7 +6,7 @@ public enum LuggageTypes {
     ANIMAL("Zwierzęta"),
     MUSICAL_INSTRUMENT("Instumenty muzyczne");
 
-    private String value;
+    private final String value;
     private LuggageTypes(String value) {
         this.value = value;
     }

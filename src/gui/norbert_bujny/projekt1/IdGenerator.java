@@ -13,10 +13,10 @@ public abstract class IdGenerator {
 
     private static void increaseID(String field) {
         String fieldValue = IdGenerator.getIdValue(field);
-        Integer id = Integer.parseInt(fieldValue.substring(2));
+        int id = Integer.parseInt(fieldValue.substring(2));
         id = id + 1;
         String idPrefix = fieldValue.substring(0, 2);
-        IdGenerator.carID = idPrefix + id.toString();
+        IdGenerator.carID = idPrefix + id;
     }
 
     private static String getIdValue(String field) {
