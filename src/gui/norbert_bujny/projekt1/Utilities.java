@@ -86,7 +86,7 @@ public abstract class Utilities {
         List<Integer> chosenOptions;
         do {
             chosenOptions = Utilities.parseStringListToIntegerList(Utilities.handleUserRequiredListInput(prompt));
-        } while (chosenOptions.stream().filter(i -> i < 1 || i > enumOptions.size()).collect(Collectors.toList()).size() > 0);
+        } while (chosenOptions.stream().filter(i -> i < 1 || i > enumOptions.size()).toList().size() > 0);
 
         for (Integer option : chosenOptions) {
             enumWrapper.setChosenOption(option - 1);

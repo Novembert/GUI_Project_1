@@ -25,8 +25,8 @@ public abstract class IdGenerator {
             Field idField = IdGenerator.class.getDeclaredField(field);
             idField.setAccessible(true);
             fieldValue = (String) idField.get(null);
-        } catch (Throwable e) {
-            System.err.println(e);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
         return fieldValue;
     }

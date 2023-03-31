@@ -1,8 +1,5 @@
 package gui.norbert_bujny.projekt1;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public final class MainMenuCreator extends GenericMenuCreator<MenuCommandsReceiver> {
     MainMenuCreator(MenuCommandsReceiver receiver) {
         super(receiver);

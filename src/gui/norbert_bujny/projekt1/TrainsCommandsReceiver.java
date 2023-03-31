@@ -25,7 +25,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
                 homeStation = this.stationsMap.searchStationByCode(Utilities.handleUserRequiredInput("Podaj kod stacji startowej: "));
             } catch (StationNotFoundException e) {
                 retry++;
-                System.out.println(e);
+                System.out.println(e.getMessage());
                 Utilities.printRetryInformation(retry, MAX_RETRY);
             }
         } while (homeStation == null && retry < MAX_RETRY);
@@ -36,7 +36,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
                 targetStation = this.stationsMap.searchStationByCode(Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: "));
             } catch (StationNotFoundException e) {
                 retry++;
-                System.out.println(e);
+                System.out.println(e.getMessage());
                 Utilities.printRetryInformation(retry, MAX_RETRY);
             }
         } while (targetStation == null);
@@ -58,7 +58,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             car.setIsAttachedTo(train);
             System.out.println("Przypisano wagon");
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             trainsCollection.deleteItem(train.getID());
             System.out.println("Usunięto pociąg");
         } catch (ItemNotFoundException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 }

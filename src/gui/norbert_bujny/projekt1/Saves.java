@@ -23,7 +23,7 @@ public class Saves {
     }
 
     public Boolean findIfSaveExists(String saveName) {
-        return saves.keySet().contains(saveName);
+        return saves.containsKey(saveName);
     }
 
     public void createNewSave(String saveName, StationsGraph stations, CarsCollection cars) {
@@ -77,9 +77,11 @@ public class Saves {
 
         Map<String, File> foundSaves = new HashMap<>();
 
-        for (File file : savesDirectories) {
-            if (file.isDirectory()) {
-                foundSaves.put(file.getName(), file);
+        if (savesDirectories != null) {
+            for (File file : savesDirectories) {
+                if (file.isDirectory()) {
+                    foundSaves.put(file.getName(), file);
+                }
             }
         }
 

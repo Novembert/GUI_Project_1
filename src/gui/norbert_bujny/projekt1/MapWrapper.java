@@ -1,6 +1,5 @@
 package gui.norbert_bujny.projekt1;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,7 +49,7 @@ public class MapWrapper<T extends IdRepresentedItem> {
                 item = this.getItem(Utilities.handleUserRequiredInput(prompt));
             } catch (ItemNotFoundException e) {
                 retry++;
-                System.out.println(e);
+                System.out.println(e.getMessage());
                 Utilities.printRetryInformation(retry, MAX_RETRY);
             }
         } while (item == null && retry < MAX_RETRY);

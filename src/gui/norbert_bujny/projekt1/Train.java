@@ -3,7 +3,7 @@ package gui.norbert_bujny.projekt1;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class Train implements IdRepresentedItem, Serializable {
     private String ID;
@@ -51,7 +51,7 @@ public class Train implements IdRepresentedItem, Serializable {
     private int getElectricCarsCount() {
         return this.cars.stream()
                 .filter(car -> car.getNeedsElectricity())
-                .collect(Collectors.toList())
+                .toList()
                 .size();
     }
 

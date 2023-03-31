@@ -1,6 +1,7 @@
 package gui.norbert_bujny.projekt1;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,6 +40,9 @@ public class MenuList {
                 System.out.println("Nie ma takiej opcji w menu.");
                 this.runMenuList();
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Podano niepoprawną opcję");
+            this.runMenuList();
         } catch (Exception e) {
             System.out.println("Wystąpił błąd");
             e.printStackTrace();
