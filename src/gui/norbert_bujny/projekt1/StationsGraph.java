@@ -33,15 +33,18 @@ public class StationsGraph {
         stationsConnections.putIfAbsent(station, new ArrayList<>());
     }
 
-    public void addStationToList(Station station, List<String> connectionsCodes) {
+    public int addStationToList(Station station, List<String> connectionsCodes) {
         stationsConnections.putIfAbsent(station, new ArrayList<>());
+        int addedConnectionsCount = 0;
 
         for (Station savedStation : stationsConnections.keySet()) {
-//              TODO handle non-existing stationCode
             if (connectionsCodes.contains(savedStation.getCode())) {
                 this.addConnection(savedStation, station);
+                addedConnectionsCount++;
             }
         }
+
+        return addedConnectionsCount;
     }
 
     public void removeStationFromList(Station station) {
@@ -108,7 +111,7 @@ public class StationsGraph {
         return visited;
     }
 
-    private Station searchStationByCode(String code) throws StationNotFoundException {
+    public Station searchStationByCode(String code) throws StationNotFoundException {
         Set<Station> stationsSet = this.stationsConnections.keySet();
 
         for (Station station : stationsSet) {

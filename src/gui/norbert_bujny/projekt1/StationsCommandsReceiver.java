@@ -16,18 +16,21 @@ public class StationsCommandsReceiver extends MenuCommandsReceiver {
 
         Station newStation = new Station(name, code);
 
-        List<String> connectionsList = Utilities.handleUserListInput("[OPCJONALNIE]\nPodaj listę kodów miast, z którymi Twoja stacja ma być połączona.\nLista musi być rozdzielona przecinkami.");
+        List<String> connectionsList = Utilities.handleUserListInput("[OPCJONALNIE]\nPodaj listę kodów stacji, z którymi Twoja stacja ma być połączona.\nLista musi być rozdzielona przecinkami.");
 
         if (connectionsList.size() > 0) {
-            this.stationsMap.addStationToList(newStation, connectionsList);
+            int addedConnectionsCount = this.stationsMap.addStationToList(newStation, connectionsList);
+            System.out.println("Dodano stację oraz " + addedConnectionsCount + " " + Utilities.getCorrectSingularOrPluralForm(addedConnectionsCount, "połączenie", "połączenia", "połączeń"));
         } else {
             this.stationsMap.addStationToList(newStation);
+            System.out.println("Dodano stację");
         }
     }
 
     public void initializeDeleteStation() {
         try {
-            this.stationsMap.removeStationFromList(Utilities.handleUserRequiredInput("Podaj kod miasta: "));
+            this.stationsMap.removeStationFromList(Utilities.handleUserRequiredInput("Podaj kod stacji: "));
+            System.out.println("Usunięto stację");
         } catch (StationNotFoundException e){
             System.out.println(e.getMessage());
         }

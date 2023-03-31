@@ -32,10 +32,16 @@ public class MenuList {
         Scanner scanner = new Scanner(System.in);
         try {
             int choice = scanner.nextInt();
-            menuItems.get(choice - 1).executeAction();
+            MenuItem chosenMenuItem = menuItems.get(choice - 1);
+            if (chosenMenuItem != null) {
+                menuItems.get(choice - 1).executeAction();
+            } else {
+                System.out.println("Nie ma takiej opcji w menu.");
+                this.runMenuList();
+            }
         } catch (Exception e) {
-            System.out.println("Nie ma takiej opcji w menu.");
-            this.runMenuList();
+            System.out.println("Wystąpił błąd");
+            e.printStackTrace();
         }
     }
 }

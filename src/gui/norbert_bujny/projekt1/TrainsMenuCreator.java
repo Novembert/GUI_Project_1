@@ -19,21 +19,24 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add( new MenuItem(2, "Dodaj pociag", new Command() {
             @Override
             public void execute() {
-//                System.out.println();
+                receiver.addTrain();
+                receiver.switchSubmenu("main");
             }
         }));
 
         mainMenu.menuItems.add( new MenuItem(3, "Przypisz wagon", new Command() {
             @Override
             public void execute() {
-//                receiver.switchSubmenu("trains");
+                receiver.attachCar();
+                receiver.switchSubmenu("main");
             }
         }));
 
-        mainMenu.menuItems.add( new MenuItem(4, "Usun pociag", new Command() {
+        mainMenu.menuItems.add(new MenuItem(4, "Usuń pociąg", new Command() {
             @Override
             public void execute() {
-//                receiver.switchSubmenu("trains");
+                receiver.deleteTrain();
+                receiver.switchSubmenu("main");
             }
         }));
 

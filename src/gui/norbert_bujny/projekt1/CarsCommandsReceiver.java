@@ -21,17 +21,29 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
         try {
             this.carsCollection.addItem((BaseCar) Class.forName(this.carsTypes.map.get(chosenCarType)).getConstructor().newInstance());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("Nie udało się utworzyć wagonu podanego typu");
         }
     }
 
     public void initializeCarCopier() {
-        String carToCopyID = Utilities.handleUserRequiredInput("Podaj ID wagonu");
-        this.carsCollection.addItem(this.carsCollection.getItem(carToCopyID).clone());
+        try {
+            BaseCar carToCopy = null;
+            carToCopy = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
+            this.carsCollection.addItem(carToCopy.clone());
+            System.out.println("Skopiowano wagon");
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void initializeCarDelete() {
-        String carToDeleteId = Utilities.handleUserRequiredInput("Podaj ID wagonu");
-        this.carsCollection.deleteItem(carToDeleteId);
+        try {
+            BaseCar carToDelete = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
+            this.carsCollection.deleteItem(carToDelete.getID());
+            carToDelete.setIsAttachedTo(null);
+            System.out.println("Usunięto wagon");
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

@@ -5,6 +5,7 @@ public final class App {
 
     private StationsGraph stationsMap;
     private CarsCollection carsCollection;
+    private TrainsCollection trainsCollection;
     private Saves saves;
     private Menu menu;
 
@@ -26,6 +27,7 @@ public final class App {
     public void initialize() {
         this.stationsMap = new StationsGraph();
         this.carsCollection = new CarsCollection();
+        this.trainsCollection = new TrainsCollection();
         this.saves = new Saves();
 
         this.initializeMenus();
@@ -49,5 +51,9 @@ public final class App {
 
     public CarsCollection getCarsCollection() {
         return this.carsCollection;
+    }
+
+    public TrainsCollection getTrainsCollection() {
+        return this.trainsCollection;
     }
 }

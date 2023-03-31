@@ -20,7 +20,11 @@ public class MapWrapper<T extends IdRepresentedItem> {
         return this.map.values().stream().map(c -> c.toString()).collect(Collectors.joining("\n===\n"));
     }
 
-    public T getItem(String ID) {
+    public T getItem(String ID) throws ItemNotFoundException {
+        T item = this.map.get(ID);
+        if (item == null) {
+            throw new ItemNotFoundException("Nie znaleziono nic o takim identyfikatorze");
+        }
         return this.map.get(ID);
     }
 
@@ -34,5 +38,27 @@ public class MapWrapper<T extends IdRepresentedItem> {
 
     public Map<String, T> getMap() {
         return this.map;
+    }
+
+    public T getItemWithPrompt(String prompt) throws ItemNotFoundException {
+        T item = null;
+        int retry = 0;
+        int MAX_RETRY = 3;
+        do {
+            try {
+                System.out.println(this.getItemsList());
+                item = this.getItem(Utilities.handleUserRequiredInput(prompt));
+            } catch (ItemNotFoundException e) {
+                retry++;
+                System.out.println(e);
+                Utilities.printRetryInformation(retry, MAX_RETRY);
+            }
+        } while (item == null && retry < MAX_RETRY);
+
+        if (item == null) {
+            throw new ItemNotFoundException();
+        }
+
+        return item;
     }
 }

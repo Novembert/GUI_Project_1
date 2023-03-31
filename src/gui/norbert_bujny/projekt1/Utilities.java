@@ -138,4 +138,14 @@ public abstract class Utilities {
     public static List<Integer> parseStringListToIntegerList(List<String> sourceList) {
         return sourceList.stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
     }
+
+    public static void printRetryInformation(int retry, int max) {
+        System.out.println("[Próba " + retry + ". z " + max + "]");
+    }
+
+    public static String getCorrectSingularOrPluralForm(int number, String singular, String plural1, String plural2) {
+        if (number == 1) return singular;
+        if (number < 5 && number > 1) return plural1;
+        return plural2;
+    }
 }
