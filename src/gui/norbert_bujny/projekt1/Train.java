@@ -22,17 +22,17 @@ public class Train implements IdRepresentedItem, Serializable {
         this.currentStation = homeStation;
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
         this.cars = new ArrayList<>();
-        this.initlializeTrain();
+        this.initializeTrain();
     }
 
-    private void initlializeTrain() {
+    private void initializeTrain() {
         this.name = Utilities.handleUserRequiredInput("Nazwa: ");
         this.maxWeight = Double.parseDouble(Utilities.handleUserRequiredInput("Maksymalna waga transportowanego ładunku: "));
         this.maxCarsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna liczba wagonów: "));
         this.maxElectricCarsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna liczba wagonów wymagających podłączenia do sieci elektrycznej: "));
     }
 
-    public void attachCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException {
+    public void attachCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException {
         if (this.canAddCar(car)) this.cars.add(car);
     }
 
@@ -40,10 +40,20 @@ public class Train implements IdRepresentedItem, Serializable {
         return this.cars;
     }
 
-    private boolean canAddCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException {
+    private double sumCarsGrossWeight() {
+        double sum = 0;
+        for (BaseCar car : this.getCars()) {
+            sum += car.getGrossWeight();
+        }
+
+        return sum;
+    }
+
+    private boolean canAddCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException {
         if (this.cars.size() >= this.maxCarsCount) throw new TooManyCarsException();
         if (car.getNeedsElectricity() && this.getElectricCarsCount() >= this.maxElectricCarsCount)
             throw new TooManyElectricCarsException();
+        if (car.getGrossWeight() >= this.maxWeight - this.sumCarsGrossWeight()) throw new TooHeavyCarException();
 
         return true;
     }

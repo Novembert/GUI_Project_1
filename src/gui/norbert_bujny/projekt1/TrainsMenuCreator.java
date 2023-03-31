@@ -9,14 +9,22 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
     public MenuList createMenuList() {
         MenuList mainMenu = new MenuList("Pociągi");
 
-        mainMenu.menuItems.add( new MenuItem(1, "Menu glowne", new Command() {
+        mainMenu.menuItems.add(new MenuItem(1, "Menu glowne", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("main");
             }
         }));
 
-        mainMenu.menuItems.add( new MenuItem(2, "Dodaj pociag", new Command() {
+        mainMenu.menuItems.add(new MenuItem(2, "List pociągów", new Command() {
+            @Override
+            public void execute() {
+                receiver.printTrainsList();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(3, "Dodaj pociag", new Command() {
             @Override
             public void execute() {
                 receiver.addTrain();
@@ -24,7 +32,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             }
         }));
 
-        mainMenu.menuItems.add( new MenuItem(3, "Przypisz wagon", new Command() {
+        mainMenu.menuItems.add(new MenuItem(4, "Przypisz wagon", new Command() {
             @Override
             public void execute() {
                 receiver.attachCar();
@@ -32,7 +40,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(4, "Usuń pociąg", new Command() {
+        mainMenu.menuItems.add(new MenuItem(5, "Usuń pociąg", new Command() {
             @Override
             public void execute() {
                 receiver.deleteTrain();

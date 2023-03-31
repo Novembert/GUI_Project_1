@@ -3,6 +3,7 @@ package gui.norbert_bujny.projekt1;
 // https://www.baeldung.com/java-graphs
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StationsGraph {
     private Map<Station, List<Station>> stationsConnections;
@@ -11,22 +12,16 @@ public class StationsGraph {
         this.stationsConnections = new HashMap<>();
     }
 
-    StationsGraph(ModuleConfig config) {
-        List<List<String>> configRows = config.getConfigRows();
-        this.stationsConnections = new HashMap<>();
-
-        for (List<String> configRow : configRows) {
-            Station newStation = new Station(configRow.get(0), configRow.get(1));
-            this.addStationToList(newStation, Utilities.parseCommaSeparatedStringToList(configRow.get(2)));
-        }
-    }
-
     public void setStationsConnections(Map<Station, List<Station>> stationsConnections) {
         this.stationsConnections = stationsConnections;
     }
 
     public Map<Station, List<Station>> getStationsConnections() {
         return this.stationsConnections;
+    }
+
+    public String getStationsList() {
+        return this.stationsConnections.keySet().stream().map(s -> s.toString()).collect(Collectors.joining("\n"));
     }
 
     public void addStationToList(Station station) {

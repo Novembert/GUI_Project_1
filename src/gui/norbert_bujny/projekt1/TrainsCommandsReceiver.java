@@ -62,6 +62,10 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         }
     }
 
+    public void printTrainsList() {
+        System.out.println(this.trainsCollection.getItemsList());
+    }
+
     public void deleteTrain() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
@@ -70,7 +74,6 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             for (BaseCar car : cars) {
                 car.setIsAttachedTo(null);
             }
-            ;
 
             trainsCollection.deleteItem(train.getID());
             System.out.println("Usunięto pociąg");

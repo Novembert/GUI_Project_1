@@ -46,6 +46,10 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
         return this.needsElectricity;
     }
 
+    public double getGrossWeight() {
+        return this.grossWeight;
+    }
+
     public void setIsAttachedTo(Train train) {
         this.isAttachedTo = train;
     }

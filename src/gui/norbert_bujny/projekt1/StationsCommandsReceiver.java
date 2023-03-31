@@ -10,6 +10,10 @@ public class StationsCommandsReceiver extends MenuCommandsReceiver {
         this.stationsMap = appReference.getStationsMap();
     }
 
+    public void printStationsList() {
+        System.out.println(this.stationsMap.getStationsList());
+    }
+
     public void initializeCreateStation() {
         String name = Utilities.handleUserRequiredInput("Podaj nazwę: ");
         String code = Utilities.handleUserRequiredInput("Podaj kod: ");
