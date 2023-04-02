@@ -80,4 +80,8 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
                 ",\nMasa brutto: " + this.grossWeight +
                 ",\nCzy wymaga podłączenia do sieci elektrycznej lokomotywy: " + Utilities.getPolishTranslationForBooleanValues(this.needsElectricity);
     }
+
+    public String toShortString() {
+        return "[" + this.ID + "] " + this.carType + (this.needsElectricity ? "[EL]" : "");
+    }
 }

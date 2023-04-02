@@ -1,7 +1,6 @@
 package gui.norbert_bujny.projekt1;
 
-// https://www.baeldung.com/java-graphs
-
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -80,30 +79,56 @@ public class StationsGraph {
         this.stationsConnections.get(station).remove(targetStation);
     }
 
-//    TODO FIX!
-    public Set<Station> findPath(String code, String targetStationCode) throws StationNotFoundException {
+    //    TODO FIX!
+    public List<Station> findPath(String code, String targetStationCode) throws StationNotFoundException, PathNotFoundException {
+
         Station station = this.searchStationByCode(code);
         Station targetStation = this.searchStationByCode(targetStationCode);
+        boolean pathFound = false;
 
+        Queue<Station> stationsQueue = new LinkedList<>();
         Set<Station> visited = new LinkedHashSet<>();
-        Queue<Station> queue = new LinkedList<>();
 
-        queue.add(station);
+        Map<Station, Station> path = new HashMap<>();
+
+        for (Station st : this.stationsConnections.keySet()) {
+            path.put(st, null);
+        }
+
+        stationsQueue.add(station);
         visited.add(station);
 
-        while (!queue.isEmpty()) {
-            Station currentStation = queue.poll();
-            for (Station st : this.stationsConnections.get(currentStation)) {
-                if (!visited.contains(targetStation)) {
-                    visited.add(st);
-                    queue.add(st);
-                } else {
-                    visited.add(st);
-                    break;
+        while (!stationsQueue.isEmpty()) {
+            Station currentStation = stationsQueue.poll();
+            if (currentStation.equals(targetStation)) {
+                pathFound = true;
+                break;
+            }
+            for (Station neighbourStation : this.stationsConnections.get(currentStation)) {
+                if (!visited.contains(neighbourStation)) {
+                    path.put(neighbourStation, currentStation);
+                    visited.add(neighbourStation);
+                    stationsQueue.add(neighbourStation);
                 }
             }
         }
-        return visited;
+
+        if (pathFound) {
+            List<Station> resultPath = new ArrayList<>();
+            Station pathStation = targetStation;
+            while (pathStation != null) {
+                resultPath.add(pathStation);
+                pathStation = path.get(pathStation);
+            }
+
+
+            Collections.reverse(resultPath);
+            resultPath.remove(0);
+
+            return resultPath;
+        } else {
+            throw new PathNotFoundException();
+        }
     }
 
     public Station searchStationByCode(String code) throws StationNotFoundException {

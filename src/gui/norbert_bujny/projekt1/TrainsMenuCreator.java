@@ -32,7 +32,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(4, "Przypisz wagon", new Command() {
+        mainMenu.menuItems.add(new MenuItem(4, "Przyczep wagon", new Command() {
             @Override
             public void execute() {
                 receiver.attachCar();
@@ -40,7 +40,15 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(5, "Usuń pociąg", new Command() {
+        mainMenu.menuItems.add(new MenuItem(5, "Odczep wagon", new Command() {
+            @Override
+            public void execute() {
+                receiver.detachCar();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(6, "Usuń pociąg", new Command() {
             @Override
             public void execute() {
                 receiver.deleteTrain();

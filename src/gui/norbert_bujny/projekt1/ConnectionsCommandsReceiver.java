@@ -64,6 +64,8 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
             System.out.println("Trasa: " + this.stationsMap.findPath(code, targetCode));
         } catch (StationNotFoundException e) {
             System.out.println(e.getMessage());
+        } catch (PathNotFoundException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

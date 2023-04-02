@@ -5,4 +5,6 @@ public class CarsCollection extends MapWrapper<BaseCar> {
     CarsCollection() {
         super();
     }
+
+
 }

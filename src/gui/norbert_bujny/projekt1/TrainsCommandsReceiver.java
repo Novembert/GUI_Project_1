@@ -24,39 +24,56 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             try {
                 homeStation = this.stationsMap.searchStationByCode(Utilities.handleUserRequiredInput("Podaj kod stacji startowej: "));
             } catch (StationNotFoundException e) {
+                if (retry > 3) {
+                    System.out.println("Nie udało się znaleźć stacji startowej.");
+                    return;
+                }
                 retry++;
                 System.out.println(e.getMessage());
                 Utilities.printRetryInformation(retry, MAX_RETRY);
             }
-        } while (homeStation == null && retry < MAX_RETRY);
+        } while (homeStation == null);
 
         retry = 0;
         do {
             try {
                 targetStation = this.stationsMap.searchStationByCode(Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: "));
             } catch (StationNotFoundException e) {
+                if (retry > 3) {
+                    System.out.println("Nie udało się znaleźć stacji docelowej.");
+                    return;
+                }
                 retry++;
                 System.out.println(e.getMessage());
                 Utilities.printRetryInformation(retry, MAX_RETRY);
             }
         } while (targetStation == null);
 
-        if (targetStation == null || homeStation == null) {
-            System.out.println("Nie można utworzyć pociągu bez stacji startowej lub docelowej");
-        } else {
-            this.trainsCollection.addItem(new Train(homeStation, targetStation));
-            System.out.println("Dodano pociąg");
-        }
+        this.trainsCollection.addItem(new Train(homeStation, targetStation));
+        System.out.println("Dodano pociąg");
     }
 
     public void attachCar() {
         try {
-            BaseCar car = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
+            BaseCar car = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
 
             train.attachCar(car);
             car.setIsAttachedTo(train);
-            System.out.println("Przypisano wagon");
+            System.out.println("Przyczepiono wagon");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void detachCar() {
+        try {
+            Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
+            BaseCar car = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
+
+            train.detachCar(car);
+            car.setIsAttachedTo(null);
+            System.out.println("Odczepiono wagon");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
