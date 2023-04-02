@@ -28,27 +28,31 @@ public class Saves {
 
     public void createNewSave(String saveName, StationsGraph stations, CarsCollection cars) {
         File saveDirectory = new File(this.rootSavesDirectory + "/" + saveName);
-        if (saveDirectory.mkdir()) {
-            try {
-                FileOutputStream fos = new FileOutputStream(saveDirectory.getPath() + "/stations");
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(stations.getStationsConnections());
+        try {
+            saveDirectory.mkdir();
 
-                fos = new FileOutputStream(saveDirectory.getPath() + "/cars");
-                oos = new ObjectOutputStream(fos);
-                oos.writeObject(cars.getMap());
+            FileOutputStream fos = new FileOutputStream(saveDirectory.getPath() + "/stations");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(stations.getStationsConnections());
 
-                oos.close();
-                fos.close();
+            fos = new FileOutputStream(saveDirectory.getPath() + "/cars");
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(cars.getMap());
 
-                this.saves.put(saveName, saveDirectory);
-            } catch (Exception e) {
-                System.out.println("Nie udało się zapisać stanu aplikacji.");
-                throw new RuntimeException(e);
-            }
-        } else {
-            System.out.println("Nie udało się zapisać stanu aplikacji.");
+            oos.close();
+            fos.close();
+
+            this.saves.put(saveName, saveDirectory);
+        } catch (Exception e) {
+            System.out.println("Nie udało się zapisać stanu aplikacji. 1");
+            throw new RuntimeException(e);
         }
+    }
+
+    public void overrideSave(String saveName, StationsGraph stations, CarsCollection cars) {
+        File saveDirectory = new File(this.rootSavesDirectory + "/" + saveName);
+        this.deleteDir(saveDirectory);
+        this.createNewSave(saveName, stations, cars);
     }
 
     public void readSave(String saveName) {
@@ -70,6 +74,16 @@ public class Saves {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private void deleteDir(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDir(f);
+            }
+        }
+        file.delete();
     }
 
     private Map<String, File> findExistingSaves(File rootDirectory) {

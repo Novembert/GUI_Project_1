@@ -8,7 +8,7 @@ public final class MainMenuCreator extends GenericMenuCreator<MenuCommandsReceiv
     public MenuList createMenuList() {
         MenuList mainMenu = new MenuList("Menu główne");
 
-        mainMenu.menuItems.add( new MenuItem(1, "Lokomotywy", new Command() {
+        mainMenu.menuItems.add(new MenuItem(1, "Pociągi", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("trains");
@@ -29,7 +29,7 @@ public final class MainMenuCreator extends GenericMenuCreator<MenuCommandsReceiv
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(4, "Polaczenia", new Command() {
+        mainMenu.menuItems.add(new MenuItem(4, "Połączenia", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("connections");

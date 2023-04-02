@@ -8,7 +8,7 @@ public final class StationsMenuCreator extends GenericMenuCreator<StationsComman
     public MenuList createMenuList() {
         MenuList menu = new MenuList("Stacje");
 
-        menu.menuItems.add(new MenuItem(1, "Menu glowne", new Command() {
+        menu.menuItems.add(new MenuItem(1, "Menu główne", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("main");
@@ -23,7 +23,7 @@ public final class StationsMenuCreator extends GenericMenuCreator<StationsComman
             }
         }));
 
-        menu.menuItems.add(new MenuItem(3, "Dodaj stacje", new Command() {
+        menu.menuItems.add(new MenuItem(3, "Dodaj stację", new Command() {
             @Override
             public void execute() {
                 receiver.initializeCreateStation();
@@ -31,9 +31,10 @@ public final class StationsMenuCreator extends GenericMenuCreator<StationsComman
             }
         }));
 
-        menu.menuItems.add(new MenuItem(4, "Usun stacje", new Command() {
+        menu.menuItems.add(new MenuItem(4, "Usun stację", new Command() {
             @Override
             public void execute() {
+                receiver.printStationsList();
                 receiver.initializeDeleteStation();
                 receiver.switchSubmenu("main");
             }

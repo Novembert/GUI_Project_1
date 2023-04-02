@@ -9,7 +9,7 @@ public final class CarsMenuCreator extends GenericMenuCreator<CarsCommandsReceiv
     public MenuList createMenuList() {
         MenuList mainMenu = new MenuList("Wagony");
 
-        mainMenu.menuItems.add(new MenuItem(1, "Menu glowne", new Command() {
+        mainMenu.menuItems.add(new MenuItem(1, "Menu główne", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("main");

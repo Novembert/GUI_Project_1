@@ -20,7 +20,7 @@ public class StationsGraph {
     }
 
     public String getStationsList() {
-        return this.stationsConnections.keySet().stream().map(s -> s.toString()).collect(Collectors.joining("\n"));
+        return this.stationsConnections.keySet().stream().map(s -> s.toString() + " || Połączenia -> " + this.stationsConnections.get(s)).collect(Collectors.joining("\n"));
     }
 
     public void addStationToList(Station station) {

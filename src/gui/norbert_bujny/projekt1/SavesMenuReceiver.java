@@ -31,6 +31,7 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
     }
 
     public void overrideState() {
-        String saveName = Utilities.handleUserRequiredInput("Podaj nazwę zapisu: ");
+        List<String> savesNames = this.saves.listExistingSaves();
+        this.saves.overrideSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames), stationsMap, carsCollection);
     }
 }

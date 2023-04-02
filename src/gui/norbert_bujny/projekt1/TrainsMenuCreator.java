@@ -9,14 +9,14 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
     public MenuList createMenuList() {
         MenuList mainMenu = new MenuList("Pociągi");
 
-        mainMenu.menuItems.add(new MenuItem(1, "Menu glowne", new Command() {
+        mainMenu.menuItems.add(new MenuItem(1, "Menu główne", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("main");
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(2, "List pociągów", new Command() {
+        mainMenu.menuItems.add(new MenuItem(2, "Lista pociągów", new Command() {
             @Override
             public void execute() {
                 receiver.printTrainsList();
@@ -24,7 +24,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(3, "Dodaj pociag", new Command() {
+        mainMenu.menuItems.add(new MenuItem(3, "Dodaj pociąg", new Command() {
             @Override
             public void execute() {
                 receiver.addTrain();

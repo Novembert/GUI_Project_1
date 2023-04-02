@@ -8,7 +8,7 @@ public class SavesMenuCreator extends GenericMenuCreator<SavesMenuReceiver> {
     public MenuList createMenuList() {
         MenuList savesMenu = new MenuList("Wczytaj/Zapisz");
 
-        savesMenu.menuItems.add(new MenuItem(1, "Menu glowne", new Command() {
+        savesMenu.menuItems.add(new MenuItem(1, "Menu główne", new Command() {
             @Override
             public void execute() {
                 receiver.switchSubmenu("main");
@@ -23,7 +23,15 @@ public class SavesMenuCreator extends GenericMenuCreator<SavesMenuReceiver> {
             }
         }));
 
-        savesMenu.menuItems.add(new MenuItem(3, "Wczytaj zapis", new Command() {
+        savesMenu.menuItems.add(new MenuItem(3, "Nadpisz zapis", new Command() {
+            @Override
+            public void execute() {
+                receiver.overrideState();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        savesMenu.menuItems.add(new MenuItem(4, "Wczytaj zapis", new Command() {
             @Override
             public void execute() {
                 receiver.readState();
