@@ -16,8 +16,11 @@ public class Train implements IdRepresentedItem, Serializable {
     private Station homeStation;
 
     private Station targetStation;
+    private TrainRideDirection rideDirection;
     private Station currentStation;
     private List<BaseCar> cars;
+    private List<Station> currentPath;
+    private TrainsDirector director;
 
     public Train(Station homeStation, Station targetStation) {
         this.homeStation = homeStation;
@@ -25,6 +28,7 @@ public class Train implements IdRepresentedItem, Serializable {
         this.currentStation = homeStation;
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
         this.cars = new ArrayList<>();
+        this.rideDirection = TrainRideDirection.GO_TO_TARGET;
         this.initializeTrain();
     }
 
@@ -33,6 +37,19 @@ public class Train implements IdRepresentedItem, Serializable {
         this.maxWeight = Double.parseDouble(Utilities.handleUserRequiredInput("Maksymalna waga transportowanego ładunku: "));
         this.maxCarsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna liczba wagonów: "));
         this.maxElectricCarsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna liczba wagonów wymagających podłączenia do sieci elektrycznej: "));
+    }
+
+    public void runTrain() {
+        try {
+            if (this.rideDirection.equals(TrainRideDirection.GO_TO_TARGET)) {
+                this.currentPath = this.director.requestPath(this, this.homeStation, this.targetStation);
+            } else {
+                this.currentPath = this.director.requestPath(this, this.targetStation, this.homeStation);
+            }
+        } catch (PathNotFoundException e) {
+//            TODO TRY AGAIN
+        }
+
     }
 
     public void attachCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException {

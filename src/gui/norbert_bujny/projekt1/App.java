@@ -35,6 +35,7 @@ public final class App {
 
     public void run() {
         this.menu.run();
+//        TODO director run all trains
     }
 
     public Menu getMenu() {

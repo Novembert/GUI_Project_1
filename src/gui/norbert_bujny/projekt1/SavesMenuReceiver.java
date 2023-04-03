@@ -5,12 +5,14 @@ import java.util.List;
 public class SavesMenuReceiver extends MenuCommandsReceiver {
     private StationsGraph stationsMap;
     private CarsCollection carsCollection;
+    private TrainsCollection trainsCollection;
     private Saves saves;
 
     public SavesMenuReceiver(App appReference) {
         super(appReference);
         this.carsCollection = appReference.getCarsCollection();
         this.stationsMap = appReference.getStationsMap();
+        this.trainsCollection = appReference.getTrainsCollection();
         this.saves = appReference.getSaves();
     }
 
@@ -21,7 +23,7 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
         } while (this.saves.findIfSaveExists(saveName));
 
 
-        this.saves.createNewSave(saveName, stationsMap, carsCollection);
+        this.saves.createNewSave(saveName, stationsMap, carsCollection, trainsCollection);
     }
 
     public void readState() {
@@ -32,6 +34,6 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
 
     public void overrideState() {
         List<String> savesNames = this.saves.listExistingSaves();
-        this.saves.overrideSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames), stationsMap, carsCollection);
+        this.saves.overrideSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames), stationsMap, carsCollection, trainsCollection);
     }
 }
