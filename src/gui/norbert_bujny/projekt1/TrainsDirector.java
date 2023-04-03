@@ -11,7 +11,7 @@ public class TrainsDirector {
         this.trainsCollection = trains;
     }
 
-    public List<Station> requestPath(Train train, Station source, Station destination) throws PathNotFoundException {
+    public List<Connection> requestPath(Train train, Station source, Station destination) throws PathNotFoundException {
         try {
             return this.stationsMap.findPath(source.getCode(), destination.getCode());
         } catch (Exception e) {

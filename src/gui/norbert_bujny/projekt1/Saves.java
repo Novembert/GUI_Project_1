@@ -69,7 +69,7 @@ public class Saves {
 
                 fis = new FileInputStream(saveDirectory.getPath() + "/stations");
                 ois = new ObjectInputStream(fis);
-                this.appInstance.getStationsMap().setStationsConnections((Map<Station, List<Station>>) ois.readObject());
+                this.appInstance.getStationsMap().setStationsConnections((Map<Station, List<Connection>>) ois.readObject());
 
                 fis = new FileInputStream(saveDirectory.getPath() + "/trains");
                 ois = new ObjectInputStream(fis);

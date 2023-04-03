@@ -5,22 +5,31 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class StationsGraph {
-    private Map<Station, List<Station>> stationsConnections;
+    private Map<Station, List<Connection>> stationsConnections;
 
     StationsGraph() {
         this.stationsConnections = new HashMap<>();
     }
 
-    public void setStationsConnections(Map<Station, List<Station>> stationsConnections) {
+    public void setStationsConnections(Map<Station, List<Connection>> stationsConnections) {
         this.stationsConnections = stationsConnections;
     }
 
-    public Map<Station, List<Station>> getStationsConnections() {
+    public Map<Station, List<Connection>> getStationsConnections() {
         return this.stationsConnections;
     }
 
     public String getStationsList() {
-        return this.stationsConnections.keySet().stream().map(s -> s.toString() + " || Połączenia -> " + this.stationsConnections.get(s)).collect(Collectors.joining("\n"));
+        return this.stationsConnections
+                .keySet()
+                .stream()
+                .map(
+                        s -> s.toString() + " || Połączenia -> " + this.stationsConnections
+                                .get(s)
+                                .stream()
+                                .map(connection -> connection.toDirectionalString(s))
+                                .collect(Collectors.joining(", ")))
+                .collect(Collectors.joining("\n"));
     }
 
     public void addStationToList(Station station) {
@@ -58,8 +67,9 @@ public class StationsGraph {
     }
 
     public void addConnection(Station station, Station targetStation) {
-        this.stationsConnections.get(station).add(targetStation);
-        this.stationsConnections.get(targetStation).add(station);
+        Connection stationsConnection = new Connection(station, targetStation, 100);
+        this.stationsConnections.get(station).add(stationsConnection);
+        this.stationsConnections.get(targetStation).add(stationsConnection);
     }
 
     public void addConnection(String code, String targetCode) throws StationNotFoundException {
@@ -79,8 +89,7 @@ public class StationsGraph {
         this.stationsConnections.get(station).remove(targetStation);
     }
 
-    //    TODO FIX!
-    public List<Station> findPath(String code, String targetStationCode) throws StationNotFoundException, PathNotFoundException {
+    public List<Connection> findPath(String code, String targetStationCode) throws StationNotFoundException, PathNotFoundException {
 
         Station station = this.searchStationByCode(code);
         Station targetStation = this.searchStationByCode(targetStationCode);
@@ -104,7 +113,8 @@ public class StationsGraph {
                 pathFound = true;
                 break;
             }
-            for (Station neighbourStation : this.stationsConnections.get(currentStation)) {
+            for (Connection stationConnection : this.stationsConnections.get(currentStation)) {
+                Station neighbourStation = stationConnection.getTargetStation(currentStation);
                 if (!visited.contains(neighbourStation)) {
                     path.put(neighbourStation, currentStation);
                     visited.add(neighbourStation);
@@ -114,21 +124,30 @@ public class StationsGraph {
         }
 
         if (pathFound) {
-            List<Station> resultPath = new ArrayList<>();
-            Station pathStation = targetStation;
-            while (pathStation != null) {
-                resultPath.add(pathStation);
-                pathStation = path.get(pathStation);
+            List<Connection> resultPath = new ArrayList<>();
+            Station pathStation1 = targetStation;
+            Station pathStation2 = path.get(targetStation);
+            while (pathStation2 != null) {
+                resultPath.add(this.findConnectionFromTo(pathStation1, pathStation2));
+                pathStation1 = pathStation2;
+                pathStation2 = path.get(pathStation1);
             }
 
-
             Collections.reverse(resultPath);
-            resultPath.remove(0);
 
             return resultPath;
         } else {
             throw new PathNotFoundException();
         }
+    }
+
+    private Connection findConnectionFromTo(Station from, Station to) {
+        return this.stationsConnections.
+                get(from)
+                .stream()
+                .filter(connection -> connection.getTargetStation(from).equals(to))
+                .findFirst()
+                .orElse(null);
     }
 
     public Station searchStationByCode(String code) throws StationNotFoundException {

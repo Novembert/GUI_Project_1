@@ -6,6 +6,7 @@ public final class App {
     private StationsGraph stationsMap;
     private CarsCollection carsCollection;
     private TrainsCollection trainsCollection;
+    private TrainsDirector trainsDirector;
     private Saves saves;
     private Menu menu;
 
@@ -29,13 +30,14 @@ public final class App {
         this.carsCollection = new CarsCollection();
         this.trainsCollection = new TrainsCollection();
         this.saves = new Saves();
+        this.trainsDirector = new TrainsDirector(stationsMap, trainsCollection);
 
         this.initializeMenus();
     }
 
     public void run() {
         this.menu.run();
-//        TODO director run all trains
+        this.trainsDirector.runAllTrains();
     }
 
     public Menu getMenu() {
@@ -56,5 +58,9 @@ public final class App {
 
     public TrainsCollection getTrainsCollection() {
         return this.trainsCollection;
+    }
+
+    public TrainsDirector getTrainsDirector() {
+        return trainsDirector;
     }
 }

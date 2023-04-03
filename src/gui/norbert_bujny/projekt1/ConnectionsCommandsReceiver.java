@@ -61,7 +61,14 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
 
         try {
-            System.out.println("Trasa: " + this.stationsMap.findPath(code, targetCode));
+            List<Connection> path = stationsMap.findPath(code, targetCode);
+            String pathString = "";
+            Station currentStation = this.stationsMap.searchStationByCode(code);
+            for (Connection connection : path) {
+                pathString = pathString + connection.toDirectionalString(currentStation) + ", ";
+                currentStation = connection.getTargetStation(currentStation);
+            }
+            System.out.println(pathString);
         } catch (StationNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (PathNotFoundException e) {

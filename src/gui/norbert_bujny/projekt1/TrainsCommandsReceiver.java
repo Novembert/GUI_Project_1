@@ -6,12 +6,14 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     private StationsGraph stationsMap;
     private TrainsCollection trainsCollection;
     private CarsCollection carsCollection;
+    private TrainsDirector trainsDirector;
 
     public TrainsCommandsReceiver(App appReference) {
         super(appReference);
         this.stationsMap = appReference.getStationsMap();
         this.trainsCollection = appReference.getTrainsCollection();
         this.carsCollection = appReference.getCarsCollection();
+        this.trainsDirector = appReference.getTrainsDirector();
     }
 
     public void addTrain() {
@@ -49,7 +51,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             }
         } while (targetStation == null);
 
-        this.trainsCollection.addItem(new Train(homeStation, targetStation));
+        this.trainsCollection.addItem(new Train(homeStation, targetStation, trainsDirector));
         System.out.println("Dodano pociąg");
     }
 
