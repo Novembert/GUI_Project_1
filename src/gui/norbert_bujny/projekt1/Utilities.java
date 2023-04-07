@@ -19,14 +19,50 @@ public abstract class Utilities {
         return result;
     }
 
-    public static String handleUserInput (String prompt) {
+    public static int handleUserRequiredInputInt(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+
+        Integer result = null;
+        boolean error = false;
+        do {
+            System.out.println(prompt);
+            try {
+                result = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                error = true;
+                System.out.println("Zły format");
+            }
+        } while (error);
+
+        return result;
+    }
+
+    public static double handleUserRequiredInputDouble(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+
+        Double result = null;
+        boolean error = false;
+        do {
+            System.out.println(prompt);
+            try {
+                result = Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                error = true;
+                System.out.println("Zły format");
+            }
+        } while (error);
+
+        return result;
+    }
+
+    public static String handleUserInput(String prompt) {
         Scanner scanner = new Scanner(System.in);
         System.out.println(prompt);
 
-        return  scanner.nextLine();
+        return scanner.nextLine();
     }
 
-    public static List<String> handleUserListInput (String prompt) {
+    public static List<String> handleUserListInput(String prompt) {
         String stringList = Utilities.handleUserInput(prompt);
         if (!stringList.equals("")){
             return Utilities.parseCommaSeparatedStringToList(stringList);
@@ -56,7 +92,7 @@ public abstract class Utilities {
 
         int chosenOption;
         do {
-            chosenOption = Integer.parseInt(Utilities.handleUserRequiredInput("Wybierz opcję: "));
+            chosenOption = Utilities.handleUserRequiredInputInt("Wybierz opcję: ");
         } while (chosenOption < 1 || chosenOption > options.size());
 
         return options.get(chosenOption - 1);
@@ -68,9 +104,9 @@ public abstract class Utilities {
         List<Enum> enumOptions = enumWrapper.getOptions();
         Utilities.printEnumOptions(enumOptions);
 
-        int chosenOption;
+        int chosenOption = -1;
         do {
-            chosenOption = Integer.parseInt(Utilities.handleUserRequiredInput("Wybierz opcję: "));
+            chosenOption = Utilities.handleUserRequiredInputInt("Wybierz opcję: ");
         } while (chosenOption < 1 || chosenOption > enumOptions.size());
         enumWrapper.setChosenOption(chosenOption - 1);
 
@@ -147,5 +183,31 @@ public abstract class Utilities {
         if (number == 1) return singular;
         if (number < 5 && number > 1) return plural1;
         return plural2;
+    }
+
+    public static String visualizeProgress(int a, int b) {
+        double progressPercentage = a * 100 / b;
+        return progressPercentage + "% " + Utilities.getProgressVisualizer(progressPercentage);
+    }
+
+    public static String visualizeProgress(double a, double b) {
+        Double progressPercentage = a * 100 / b;
+        Number progressPercentageRounded = Math.round(progressPercentage);
+        String progressPercentageString = progressPercentage.isNaN() ? "0" : progressPercentageRounded.toString();
+        return progressPercentageString + "% " + Utilities.getProgressVisualizer(progressPercentage);
+    }
+
+    private static String getProgressVisualizer(double progressPercentage) {
+        int completed = (int) progressPercentage / 10;
+        int not_completed = 10 - completed;
+
+        return "[" + Utilities.repeatString(completed, "=") + Utilities.repeatString(not_completed, " ") + "]";
+    }
+
+    /**
+     * https://stackoverflow.com/a/16812721
+     */
+    public static String repeatString(int count, String with) {
+        return new String(new char[count]).replace("\0", with);
     }
 }

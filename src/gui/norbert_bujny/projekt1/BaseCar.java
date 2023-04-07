@@ -50,6 +50,10 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
         return this.grossWeight;
     }
 
+    public double getNetWeight() {
+        return this.netWeight;
+    }
+
     public void setIsAttachedTo(Train train) {
         this.isAttachedTo = train;
     }
@@ -68,8 +72,8 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
     }
 
     private void initializeCar() {
-        this.netWeight = Double.parseDouble(Utilities.handleUserRequiredInput("Waga netto: "));
-        this.grossWeight = Double.parseDouble(Utilities.handleUserRequiredInput("Waga brutto: "));
+        this.netWeight = Utilities.handleUserRequiredInputDouble("Waga netto: ");
+        this.grossWeight = Utilities.handleUserRequiredInputDouble("Waga brutto: ");
     }
 
     @Override

@@ -85,6 +85,16 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         System.out.println(this.trainsCollection.getItemsList());
     }
 
+    public void printTrainReport() {
+        try {
+            Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
+
+            System.out.println(train.getReport());
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void deleteTrain() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
@@ -96,6 +106,20 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
 
             trainsCollection.deleteItem(train.getID());
             System.out.println("Usunięto pociąg");
+        } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void runTrain() {
+        try {
+            Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
+            try {
+                train.runTrain();
+                System.out.println("Uruchomiono pociąg");
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }

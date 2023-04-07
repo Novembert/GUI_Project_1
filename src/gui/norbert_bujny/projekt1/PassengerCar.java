@@ -32,7 +32,7 @@ public class PassengerCar extends BaseCar {
         MenuCompatibleEnumWrapper<PassengerCarClass> enumWrapper = new MenuCompatibleEnumWrapper<>(PassengerCarClass.values());
 
         this.carClass = (PassengerCarClass) Utilities.handleUserRequiredEnumInput("Klasa: ", enumWrapper).getChosenOption();
-        this.seats = Integer.parseInt(Utilities.handleUserRequiredInput("Ilość miejsc siedzących: "));
+        this.seats = Utilities.handleUserRequiredInputInt("Ilość miejsc siedzących: ");
         this.hasCompartments = Utilities.handleUserRequiredBooleanInput("Czy ma przedziały?");
         this.hasToilet = Utilities.handleUserRequiredBooleanInput("Czy posiada toaletę?");
 

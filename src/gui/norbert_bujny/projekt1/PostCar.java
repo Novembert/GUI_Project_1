@@ -29,7 +29,7 @@ public class PostCar extends BaseCar {
         MenuCompatibleEnumWrapper<ParcelsTypes> enumWrapper = new MenuCompatibleEnumWrapper<>(ParcelsTypes.values());
 
         this.allowedParcelsTypes = Utilities.handleUserRequiredEnumSetInput("Obsługiwane typy przesyłek:", enumWrapper).getChosenOptions();
-        this.maxParcelsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna ilość przesyłek: "));
+        this.maxParcelsCount = Utilities.handleUserRequiredInputInt("Maksymalna ilość przesyłek: ");
     }
 
     @Override

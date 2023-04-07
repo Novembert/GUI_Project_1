@@ -1,12 +1,11 @@
 package gui.norbert_bujny.projekt1;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Connection implements Serializable {
     private Set<Station> stations;
+    private Queue<Train> trainsQueue;
     private double distance;
     private boolean isUsed;
 
@@ -16,6 +15,7 @@ public class Connection implements Serializable {
         this.stations.add(st2);
         this.distance = distance;
         this.isUsed = false;
+        this.trainsQueue = new LinkedList<>();
     }
 
     public Station getTargetStation(Station sourceStation) {
@@ -28,6 +28,18 @@ public class Connection implements Serializable {
 
     public void setIsUsed(Boolean isUsed) {
         this.isUsed = isUsed;
+        if (!isUsed && !this.trainsQueue.isEmpty()) {
+            Train t = trainsQueue.poll();
+            t.start();
+        }
+    }
+
+    public boolean getIsUsed() {
+        return isUsed;
+    }
+
+    public void getInQueue(Train t) {
+        this.trainsQueue.add(t);
     }
 
     @Override

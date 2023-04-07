@@ -37,7 +37,7 @@ public final class App {
 
     public void run() {
         this.menu.run();
-        this.trainsDirector.runAllTrains();
+//        this.trainsDirector.runAllTrains();
     }
 
     public Menu getMenu() {

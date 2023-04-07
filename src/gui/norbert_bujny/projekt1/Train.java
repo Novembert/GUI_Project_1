@@ -1,10 +1,8 @@
 package gui.norbert_bujny.projekt1;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Train extends Thread implements IdRepresentedItem, Serializable {
@@ -34,11 +32,12 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     private double speed;
     private double coveredCurrentPathDistance;
     private double coveredWholeTravelDistance;
+    private double currentPathDistance;
+    private double wholeTravelDistance;
 
     /**
      * other data
      */
-    private TrainsDirector director;
     private final double KMhToKMsMultiplier = 0.0002777778;
 
 
@@ -50,27 +49,26 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         this.cars = new ArrayList<>();
         this.rideDirection = TrainRideDirection.GO_TO_TARGET;
         this.speed = 100;
-        this.director = director;
         this.initializeTrain();
-        this.runTrain();
+//        this.runTrain();
     }
 
     private void initializeTrain() {
         this.name = Utilities.handleUserRequiredInput("Nazwa: ");
-        this.maxWeight = Double.parseDouble(Utilities.handleUserRequiredInput("Maksymalna waga transportowanego ładunku: "));
-        this.maxCarsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna liczba wagonów: "));
-        this.maxElectricCarsCount = Integer.parseInt(Utilities.handleUserRequiredInput("Maksymalna liczba wagonów wymagających podłączenia do sieci elektrycznej: "));
+        this.maxWeight = Utilities.handleUserRequiredInputDouble("Maksymalna waga transportowanego ładunku: ");
+        this.maxCarsCount = Utilities.handleUserRequiredInputInt("Maksymalna liczba wagonów: ");
+        this.maxElectricCarsCount = Utilities.handleUserRequiredInputInt("Maksymalna liczba wagonów wymagających podłączenia do sieci elektrycznej: ");
     }
 
     public void runTrain() {
         try {
             if (this.rideDirection.equals(TrainRideDirection.GO_TO_TARGET)) {
-                this.currentPath = this.director.requestPath(this, this.homeStation, this.targetStation);
+                this.currentPath = App.getInstance().getTrainsDirector().requestPath(this, this.homeStation, this.targetStation);
             } else {
-                this.currentPath = this.director.requestPath(this, this.targetStation, this.homeStation);
+                this.currentPath = App.getInstance().getTrainsDirector().requestPath(this, this.targetStation, this.homeStation);
             }
 
-            this.coveredWholeTravelDistance = this.getSumPathDistance(this.currentPath);
+            this.wholeTravelDistance = this.getSumPathDistance(this.currentPath);
             this.start();
         } catch (PathNotFoundException e) {
 //            TODO TRY AGAIN
@@ -118,15 +116,26 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     }
 
     public void run() {
+        Connection currentConnection = this.currentPath.get(0);
+
+        synchronized (this) {
+            if (currentConnection.getIsUsed()) {
+                currentConnection.getInQueue(this);
+            } else {
+                this.rideToStation(currentConnection);
+            }
+        }
+    }
+
+    private void rideToStation(Connection usedConnection) {
         Random random = new Random();
 
-        Connection currentConnection = this.currentPath.get(0);
-        Station targetStation = currentConnection.getTargetStation(this.currentStation);
-        currentConnection.setIsUsed(true);
+        Station targetStation = usedConnection.getTargetStation(this.currentStation);
+        usedConnection.setIsUsed(true);
         this.coveredCurrentPathDistance = 0;
+        this.currentPathDistance = usedConnection.getDistance();
 
-        while (this.coveredCurrentPathDistance < currentConnection.getDistance()) {
-            System.out.println("Jadę...");
+        while (this.coveredCurrentPathDistance < this.currentPathDistance) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -134,14 +143,39 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
                 throw new RuntimeException(e);
             }
 
-            this.coveredCurrentPathDistance = this.coveredCurrentPathDistance + (this.KMhToKMsMultiplier * this.speed);
-            this.coveredWholeTravelDistance = this.coveredWholeTravelDistance + this.coveredCurrentPathDistance;
+            double diff = this.KMhToKMsMultiplier * this.speed;
+            this.coveredCurrentPathDistance = this.coveredCurrentPathDistance + diff;
+            this.coveredWholeTravelDistance = this.coveredWholeTravelDistance + diff;
+
             this.speed = random.nextBoolean() ? this.speed - this.speed * 0.03 : this.speed + this.speed * 0.03;
         }
 
         this.currentStation = targetStation;
-        currentConnection.setIsUsed(false);
+        usedConnection.setIsUsed(false);
         this.speed = 100;
+
+        try {
+            if (targetStation.equals(this.targetStation) || targetStation.equals(this.homeStation)) {
+                Thread.sleep(30000);
+            } else {
+                Thread.sleep(200);
+            }
+            this.start();
+        } catch (InterruptedException e) {
+//                TODO obsluzyc to jakos
+            throw new RuntimeException(e);
+        }
+    }
+
+    //    TODO use it
+    private void switchRideDirection() {
+        this.rideDirection = this.rideDirection.equals(TrainRideDirection.GO_TO_HOME) ? TrainRideDirection.GO_TO_TARGET : TrainRideDirection.GO_TO_HOME;
+    }
+
+    public String getReport() {
+        return this.getTrainInfo() +
+                ",\n" + this.getCarsInfo(true) +
+                ",\n" + this.getTravelInfo();
     }
 
     @Override
@@ -151,14 +185,39 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
 
     @Override
     public String toString() {
+        return this.getTrainInfo() +
+                ",\n" + this.getCarsInfo(false);
+    }
+
+    private String getTrainInfo() {
         return "ID: " + this.ID +
                 ",\nNazwa pociągu: " + this.name +
                 ",\nStacja startowa: " + this.homeStation +
                 ",\nStacja docelowa: " + this.targetStation +
                 ",\nMaksymalna ilość wagonów: " + this.maxCarsCount +
                 ",\nMaksymalna ilość wagonów wymagających podłączenia do sieci elektrycznej: " + this.maxElectricCarsCount +
-                ",\nMaksymalna waga transportowanego ładunku: " + this.maxWeight +
-                ",\nWagony: " + this.cars.stream().map(car -> car.toShortString() + "\n\t").toString();
+                ",\nMaksymalna waga transportowanego ładunku: " + this.maxWeight;
+    }
+
+    private String getCarsInfo(boolean extended) {
+        return "Wagony: " + this.cars
+                .stream()
+                .sorted(new Comparator<BaseCar>() {
+                    @Override
+                    public int compare(BaseCar o1, BaseCar o2) {
+                        return (int) Math.round(o1.getNetWeight() - o2.getNetWeight());
+                    }
+                })
+                .map(car -> extended ? car.toString() : car.toShortString()).collect(Collectors.joining("\n\t\t"));
+    }
+
+    private String getTravelInfo() {
+        if (this.isAlive()) {
+            return "Postęp drogi do następnej stacji: " + Utilities.visualizeProgress(this.coveredCurrentPathDistance, this.currentPathDistance)
+                    + ",\n " + "Postęp całej trasy: " + Utilities.visualizeProgress(this.coveredWholeTravelDistance, this.wholeTravelDistance);
+        } else {
+            return "Pociąg stoi na stacji: " + this.currentStation.toString();
+        }
     }
 
     @Override

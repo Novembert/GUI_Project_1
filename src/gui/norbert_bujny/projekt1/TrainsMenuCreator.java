@@ -24,26 +24,26 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(3, "Dodaj pociąg", new Command() {
+        mainMenu.menuItems.add(new MenuItem(3, "Raport dot. pociągu", new Command() {
+            @Override
+            public void execute() {
+                receiver.printTrainReport();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(4, "Uruchom pociąg", new Command() {
+            @Override
+            public void execute() {
+                receiver.runTrain();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(5, "Dodaj pociąg", new Command() {
             @Override
             public void execute() {
                 receiver.addTrain();
-                receiver.switchSubmenu("main");
-            }
-        }));
-
-        mainMenu.menuItems.add(new MenuItem(4, "Przyczep wagon", new Command() {
-            @Override
-            public void execute() {
-                receiver.attachCar();
-                receiver.switchSubmenu("main");
-            }
-        }));
-
-        mainMenu.menuItems.add(new MenuItem(5, "Odczep wagon", new Command() {
-            @Override
-            public void execute() {
-                receiver.detachCar();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -52,6 +52,22 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
             @Override
             public void execute() {
                 receiver.deleteTrain();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(7, "Przyczep wagon", new Command() {
+            @Override
+            public void execute() {
+                receiver.attachCar();
+                receiver.switchSubmenu("main");
+            }
+        }));
+
+        mainMenu.menuItems.add(new MenuItem(8, "Odczep wagon", new Command() {
+            @Override
+            public void execute() {
+                receiver.detachCar();
                 receiver.switchSubmenu("main");
             }
         }));

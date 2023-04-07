@@ -26,7 +26,7 @@ public class RefrigeratorCar extends FreightCar {
 
     private void initializeCar() {
         this.hasShelves = Utilities.handleUserRequiredBooleanInput("Czy ma pólki? ");
-        this.celsiusDegrees = Double.parseDouble(Utilities.handleUserRequiredInput("Temperatura (°C)"));
+        this.celsiusDegrees = Utilities.handleUserRequiredInputDouble("Temperatura (°C)");
     }
 
     @Override

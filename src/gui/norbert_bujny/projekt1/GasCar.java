@@ -25,7 +25,7 @@ public class GasCar extends FreightCar {
     }
 
     private void initializeCar() {
-        this.gasDensity = Double.parseDouble(Utilities.handleUserRequiredInput("Gęstość gazu: "));
+        this.gasDensity = Utilities.handleUserRequiredInputDouble("Gęstość gazu: ");
         this.isDangerous = Utilities.handleUserRequiredBooleanInput("Czy przewożony gaz jest niebezpieczny?");
     }
 

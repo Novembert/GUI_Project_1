@@ -31,7 +31,7 @@ public class FluidToxicCargoCar extends ToxicCargoCar {
     }
 
     private void initializeCar() {
-        this.fluidDensity = Double.parseDouble(Utilities.handleUserRequiredInput("Gęstość cieczy: "));
+        this.fluidDensity = Utilities.handleUserRequiredInputDouble("Gęstość cieczy: ");
         this.hasIntegratedTube = Utilities.handleUserRequiredBooleanInput("Czy ma zintegrowaną rurę do pompowania cieczy?");
     }
 
