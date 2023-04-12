@@ -47,6 +47,10 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
         return this.grossWeight;
     }
 
+    public void setNetWeight(double weight) {
+        this.netWeight = weight;
+    }
+
     public double getNetWeight() {
         return this.netWeight;
     }

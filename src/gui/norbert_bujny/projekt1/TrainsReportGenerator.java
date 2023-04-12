@@ -9,8 +9,10 @@ public class TrainsReportGenerator implements Runnable {
 
     public TrainsReportGenerator(TrainsCollection trainsCollection) {
         this.trainsCollection = trainsCollection;
+        File outputDirectory = new File("output");
+        this.deleteDir(outputDirectory);
 
-        new File("output").mkdir();
+        outputDirectory.mkdir();
 
         try {
             FileWriter fw = new FileWriter(this.outputFile, true);
@@ -19,6 +21,16 @@ public class TrainsReportGenerator implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void deleteDir(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDir(f);
+            }
+        }
+        file.delete();
     }
 
     public void run() {

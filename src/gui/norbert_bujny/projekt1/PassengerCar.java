@@ -2,11 +2,13 @@ package gui.norbert_bujny.projekt1;
 
 import java.util.Objects;
 
-public class PassengerCar extends BaseCar {
+public class PassengerCar extends BaseCar implements Loadable {
     private Boolean hasToilet;
     private Integer seats;
+    private Integer takenSeats;
     private PassengerCarClass carClass;
     private Boolean hasCompartments;
+    private double expectedPassengerWeight;
 
     public PassengerCar() {
         super(true, CarTypes.PASSENGER_CAR);
@@ -23,9 +25,41 @@ public class PassengerCar extends BaseCar {
         if (otherCar != null) {
             this.hasToilet = otherCar.hasToilet;
             this.seats = otherCar.seats;
+            this.takenSeats = 0;
             this.carClass = otherCar.carClass;
             this.hasCompartments = otherCar.hasCompartments;
+            this.expectedPassengerWeight = this.calculateExpectedPassengerWeight();
         }
+    }
+
+    public Command initLoadCargo() {
+        int freeSeats = this.seats - this.takenSeats;
+        System.out.println("Wolne miejsca: " + freeSeats + "/" + this.seats);
+
+        int newPassengers = Utilities.handleUserRequiredInputInt("Ilu pasażerów ma wsiąść?");
+
+        return new Command() {
+            @Override
+            public void execute() {
+                takenSeats = newPassengers + takenSeats > seats ? seats : takenSeats + newPassengers;
+                setNetWeight(expectedPassengerWeight * takenSeats);
+            }
+        };
+    }
+
+    public Command initUnloadCargo() {
+        System.out.println("Zajęte miejsca: " + takenSeats + "/" + this.seats);
+
+        int unloadPassengers = Utilities.handleUserRequiredInputInt("Ilu pasażerów ma wysiąść?");
+        int reducedNumber = this.seats - unloadPassengers;
+
+        return new Command() {
+            @Override
+            public void execute() {
+                takenSeats = reducedNumber < 0 ? 0 : reducedNumber;
+                setNetWeight(expectedPassengerWeight * takenSeats);
+            }
+        };
     }
 
     private void initializeCar() {
@@ -33,9 +67,14 @@ public class PassengerCar extends BaseCar {
 
         this.carClass = (PassengerCarClass) Utilities.handleUserRequiredEnumInput("Klasa: ", enumWrapper).getChosenOption();
         this.seats = Utilities.handleUserRequiredInputInt("Ilość miejsc siedzących: ");
+        this.takenSeats = 0;
         this.hasCompartments = Utilities.handleUserRequiredBooleanInput("Czy ma przedziały?");
         this.hasToilet = Utilities.handleUserRequiredBooleanInput("Czy posiada toaletę?");
+        this.expectedPassengerWeight = this.calculateExpectedPassengerWeight();
+    }
 
+    private double calculateExpectedPassengerWeight() {
+        return (this.getGrossWeight() - this.getNetWeight()) / this.seats;
     }
 
     @Override

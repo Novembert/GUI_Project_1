@@ -139,4 +139,38 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
 
         System.out.println("Uruchomiomo " + count + " " + Utilities.getCorrectSingularOrPluralForm(count, "pociąg", "pociągi", "pociągów"));
     }
+
+    public void loadCar() {
+        try {
+            Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
+            Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu");
+
+            if (train.isAlive()) {
+                train.addAction(car.initLoadCargo());
+            } else {
+                Command action = car.initLoadCargo();
+                action.execute();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void unloadCar() {
+        try {
+            Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
+            Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu");
+
+            if (train.isAlive()) {
+                train.addAction(car.initUnloadCargo());
+                System.out.println("Pociąg jest w drodze. Akcja zostanie wykonana kiedy pociąg dotrze do następnej stacji.");
+            } else {
+                Command action = car.initUnloadCargo();
+                action.execute();
+                System.out.println("Akcja wykonana.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

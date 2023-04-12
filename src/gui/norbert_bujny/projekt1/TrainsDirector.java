@@ -19,13 +19,4 @@ public class TrainsDirector {
             throw new PathNotFoundException();
         }
     }
-
-    /**
-     * should be invoked only at the init of app
-     */
-    public void runAllTrains() {
-        for (Train train : this.trainsCollection.getMap().values()) {
-            train.runTrain();
-        }
-    }
 }

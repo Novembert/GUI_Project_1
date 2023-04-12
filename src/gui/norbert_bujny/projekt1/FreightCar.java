@@ -2,7 +2,7 @@ package gui.norbert_bujny.projekt1;
 
 import java.util.Objects;
 
-public class FreightCar extends BaseCar {
+public class FreightCar extends BaseCar implements Loadable {
     private WayToLoadCargo wayToLoadCargo;
     private String cargoName;
 
@@ -34,6 +34,34 @@ public class FreightCar extends BaseCar {
 
         this.wayToLoadCargo = (WayToLoadCargo) Utilities.handleUserRequiredEnumInput("Sposób ładowania: ", enumWrapper).getChosenOption();
         this.cargoName = Utilities.handleUserRequiredInput("Nazwa towaru: ");
+    }
+
+    public Command initLoadCargo() {
+        double freeWeight = this.getGrossWeight() - this.getNetWeight();
+        System.out.println("Udźwig do wykorzystania: " + freeWeight + "/" + this.getGrossWeight());
+
+        double newCargoWeight = Utilities.handleUserRequiredInputDouble("Ile towaru załadować?");
+
+        return new Command() {
+            @Override
+            public void execute() {
+                setNetWeight(newCargoWeight > freeWeight ? getGrossWeight() : newCargoWeight);
+            }
+        };
+    }
+
+    public Command initUnloadCargo() {
+        System.out.println("Zajęty udźwig: " + getNetWeight() + "/" + getGrossWeight());
+
+        double unloadWeight = Utilities.handleUserRequiredInputDouble("Ile towaru wyładować?");
+        double reducedNumber = getNetWeight() - unloadWeight;
+
+        return new Command() {
+            @Override
+            public void execute() {
+                setNetWeight(reducedNumber < 0 ? 0 : reducedNumber);
+            }
+        };
     }
 
     @Override

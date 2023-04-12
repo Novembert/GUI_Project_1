@@ -39,6 +39,7 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
      * other data
      */
     private final double KMhToKMsMultiplier = 0.0002777778;
+    private Queue<Command> actionsQueue;
 
 
     public Train(Station homeStation, Station targetStation) {
@@ -47,6 +48,7 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         this.currentStation = homeStation;
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
         this.speed = 100;
+        this.actionsQueue = new LinkedList<>();
         this.initializeTrain();
     }
 
@@ -126,6 +128,10 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         }
     }
 
+    public void addAction(Command newActionCommand) {
+        this.actionsQueue.add(newActionCommand);
+    }
+
     private void rideToStation(Connection usedConnection) {
         Random random = new Random();
 
@@ -154,6 +160,7 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         this.speed = 100;
 
         try {
+            this.executeQueuedActions();
             if (targetStation.equals(this.targetStation) || targetStation.equals(this.homeStation)) {
                 Thread.sleep(30000);
                 this.runTrain();
@@ -193,6 +200,13 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     public String toString() {
         return this.getTrainInfo() +
                 ",\n" + this.getCarsInfo(false);
+    }
+
+    private void executeQueuedActions() {
+        while (!this.actionsQueue.isEmpty()) {
+            Command currentCommand = this.actionsQueue.poll();
+            currentCommand.execute();
+        }
     }
 
     private String getTrainInfo() {
