@@ -26,7 +26,7 @@ public class Saves {
         return saves.containsKey(saveName);
     }
 
-    public void createNewSave(String saveName, StationsGraph stations, CarsCollection cars, TrainsCollection trains) {
+    public void createNewSave(String saveName, StationsGraph stations, CarsCollection cars, TrainsCollection trains, TrainCarsMap trainCarsMap) {
         File saveDirectory = new File(this.rootSavesDirectory + "/" + saveName);
         try {
             saveDirectory.mkdir();
@@ -43,6 +43,10 @@ public class Saves {
             oos = new ObjectOutputStream(fos);
             oos.writeObject(trains.getMap());
 
+            fos = new FileOutputStream(saveDirectory.getPath() + "/trains_to_cars");
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(trainCarsMap.getTrainCarsMap());
+
             oos.close();
             fos.close();
 
@@ -53,10 +57,10 @@ public class Saves {
         }
     }
 
-    public void overrideSave(String saveName, StationsGraph stations, CarsCollection cars, TrainsCollection trains) {
+    public void overrideSave(String saveName, StationsGraph stations, CarsCollection cars, TrainsCollection trains, TrainCarsMap trainCarsMap) {
         File saveDirectory = new File(this.rootSavesDirectory + "/" + saveName);
         this.deleteDir(saveDirectory);
-        this.createNewSave(saveName, stations, cars, trains);
+        this.createNewSave(saveName, stations, cars, trains, trainCarsMap);
     }
 
     public void readSave(String saveName) {
@@ -74,6 +78,11 @@ public class Saves {
                 fis = new FileInputStream(saveDirectory.getPath() + "/trains");
                 ois = new ObjectInputStream(fis);
                 this.appInstance.getTrainsCollection().setMap((Map<String, Train>) ois.readObject());
+
+                fis = new FileInputStream(saveDirectory.getPath() + "/trains_to_cars");
+                ois = new ObjectInputStream(fis);
+
+                this.appInstance.getTrainCarsMap().setMap((Map<Train, List<BaseCar>>) ois.readObject());
 
                 fis.close();
                 ois.close();

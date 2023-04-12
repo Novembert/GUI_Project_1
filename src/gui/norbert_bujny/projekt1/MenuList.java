@@ -43,9 +43,13 @@ public class MenuList {
         } catch (InputMismatchException e) {
             System.out.println("Podano niepoprawną opcję");
             this.runMenuList();
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Podano niepoprawną opcję");
+            this.runMenuList();
         } catch (Exception e) {
-            System.out.println("Wystąpił błąd");
             e.printStackTrace();
+            System.out.println("Wystąpił błąd");
+            this.runMenuList();
         }
     }
 }

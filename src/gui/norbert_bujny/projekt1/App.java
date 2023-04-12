@@ -7,6 +7,7 @@ public final class App {
     private CarsCollection carsCollection;
     private TrainsCollection trainsCollection;
     private TrainsDirector trainsDirector;
+    private TrainCarsMap trainCarsMap;
     private Saves saves;
     private Menu menu;
 
@@ -62,5 +63,9 @@ public final class App {
 
     public TrainsDirector getTrainsDirector() {
         return trainsDirector;
+    }
+
+    public TrainCarsMap getTrainCarsMap() {
+        return TrainCarsMap.getInstance();
     }
 }

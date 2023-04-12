@@ -9,18 +9,32 @@ public class TrainsReportGenerator implements Runnable {
 
     public TrainsReportGenerator(TrainsCollection trainsCollection) {
         this.trainsCollection = trainsCollection;
+
+        new File("output").mkdir();
+
+        try {
+            FileWriter fw = new FileWriter(this.outputFile, true);
+            fw.write("");
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void run() {
+        if (trainsCollection.getMap().values().isEmpty()) return;
+
         List<Train> trains = trainsCollection.getMap().values().stream().toList();
-        String result = "";
+        String result = "=================\n\n";
 
         for (Train train : trains) {
-//            result += train.getReport() + "\n";
+            result += train.getReport() + "\n\n";
         }
 
+        result += "=================\n\n\n";
+
         try {
-            FileWriter fw = new FileWriter(this.outputFile);
+            FileWriter fw = new FileWriter(this.outputFile, true);
             fw.write(result);
             fw.close();
         } catch (IOException e) {

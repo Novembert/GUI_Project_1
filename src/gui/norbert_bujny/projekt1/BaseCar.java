@@ -8,7 +8,6 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
     private double netWeight;
     private double grossWeight;
     private boolean needsElectricity;
-    private Train isAttachedTo;
     private String ID;
     private CarTypes carType;
 
@@ -20,7 +19,6 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
         }
         this.needsElectricity = needsElectricity;
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.CAR_ID.toString());
-        this.isAttachedTo = null;
         this.initializeCar();
     }
 
@@ -31,7 +29,6 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
             this.needsElectricity = otherCar.needsElectricity;
             this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.CAR_ID.toString());
             this.carType = otherCar.carType;
-            this.isAttachedTo = null;
         }
     }
 
@@ -52,10 +49,6 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
 
     public double getNetWeight() {
         return this.netWeight;
-    }
-
-    public void setIsAttachedTo(Train train) {
-        this.isAttachedTo = train;
     }
 
     @Override

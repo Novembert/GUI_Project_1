@@ -1,12 +1,11 @@
 package gui.norbert_bujny.projekt1;
 
-import java.util.List;
-
 public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     private StationsGraph stationsMap;
     private TrainsCollection trainsCollection;
     private CarsCollection carsCollection;
     private TrainsDirector trainsDirector;
+    private TrainCarsMap trainCarsMap;
 
     public TrainsCommandsReceiver(App appReference) {
         super(appReference);
@@ -14,6 +13,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         this.trainsCollection = appReference.getTrainsCollection();
         this.carsCollection = appReference.getCarsCollection();
         this.trainsDirector = appReference.getTrainsDirector();
+        this.trainCarsMap = appReference.getTrainCarsMap();
     }
 
     public void addTrain() {
@@ -51,17 +51,18 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             }
         } while (targetStation == null);
 
-        this.trainsCollection.addItem(new Train(homeStation, targetStation, trainsDirector));
+        Train newTrain = new Train(homeStation, targetStation);
+        this.trainsCollection.addItem(newTrain);
+        this.trainCarsMap.addTrain(newTrain);
         System.out.println("Dodano pociąg");
     }
 
     public void attachCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-            BaseCar car = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
+            BaseCar car = this.carsCollection.getNonAttachedCarWithPrompt("Podaj ID wagonu");
 
             train.attachCar(car);
-            car.setIsAttachedTo(train);
             System.out.println("Przyczepiono wagon");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -71,10 +72,9 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     public void detachCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-            BaseCar car = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
+            BaseCar car = this.carsCollection.getAttachedCarWithPrompt("Podaj ID wagonu");
 
             train.detachCar(car);
-            car.setIsAttachedTo(null);
             System.out.println("Odczepiono wagon");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -82,6 +82,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     }
 
     public void printTrainsList() {
+//        System.out.println(this.trainCarsMap.getTrainCarsMap());
         System.out.println(this.trainsCollection.getItemsList());
     }
 
@@ -98,12 +99,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     public void deleteTrain() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-
-            List<BaseCar> cars = train.getCars();
-            for (BaseCar car : cars) {
-                car.setIsAttachedTo(null);
-            }
-
+            this.trainCarsMap.removeTrain(train);
             trainsCollection.deleteItem(train.getID());
             System.out.println("Usunięto pociąg");
         } catch (ItemNotFoundException e) {
@@ -123,5 +119,24 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void runAllTrains() {
+        int count = 0;
+        int all = this.trainsCollection.getMap().size();
+        for (String trainId : this.trainsCollection.getMap().keySet()) {
+            try {
+                Train t = this.trainsCollection.getItem(trainId);
+                if (!t.isAlive()) {
+                    t.runTrain();
+                    count++;
+                    System.out.println("Uruchomiono " + trainId);
+                }
+            } catch (Exception e) {
+                System.out.println("Nie udało się uruchomić pociagu o ID: " + trainId);
+            }
+        }
+
+        System.out.println("Uruchomiomo " + count + " " + Utilities.getCorrectSingularOrPluralForm(count, "pociąg", "pociągi", "pociągów"));
     }
 }

@@ -40,7 +40,8 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
         try {
             BaseCar carToDelete = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
             this.carsCollection.deleteItem(carToDelete.getID());
-            carToDelete.setIsAttachedTo(null);
+//             todo detach car
+//            carToDelete.setIsAttachedTo(null);
             System.out.println("Usunięto wagon");
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());

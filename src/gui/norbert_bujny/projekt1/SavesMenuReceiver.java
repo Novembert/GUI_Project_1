@@ -6,6 +6,7 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
     private StationsGraph stationsMap;
     private CarsCollection carsCollection;
     private TrainsCollection trainsCollection;
+    private TrainCarsMap trainCarsMap;
     private Saves saves;
 
     public SavesMenuReceiver(App appReference) {
@@ -14,6 +15,7 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
         this.stationsMap = appReference.getStationsMap();
         this.trainsCollection = appReference.getTrainsCollection();
         this.saves = appReference.getSaves();
+        this.trainCarsMap = appReference.getTrainCarsMap();
     }
 
     public void saveState() {
@@ -23,7 +25,7 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
         } while (this.saves.findIfSaveExists(saveName));
 
 
-        this.saves.createNewSave(saveName, stationsMap, carsCollection, trainsCollection);
+        this.saves.createNewSave(saveName, stationsMap, carsCollection, trainsCollection, trainCarsMap);
     }
 
     public void readState() {
@@ -34,6 +36,6 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
 
     public void overrideState() {
         List<String> savesNames = this.saves.listExistingSaves();
-        this.saves.overrideSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames), stationsMap, carsCollection, trainsCollection);
+        this.saves.overrideSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames), stationsMap, carsCollection, trainsCollection, trainCarsMap);
     }
 }
