@@ -41,6 +41,18 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     private final double KMhToKMsMultiplier = 0.0002777778;
     private Queue<Command> actionsQueue;
 
+    public Train(Station homeStation, Station targetStation, String name, double maxWeight, int maxCarsCount, int maxElectricCarsCount) {
+        this.homeStation = homeStation;
+        this.targetStation = targetStation;
+        this.currentStation = homeStation;
+        this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
+        this.speed = 100;
+        this.actionsQueue = new LinkedList<>();
+        this.name = name;
+        this.maxWeight = maxWeight;
+        this.maxCarsCount = maxCarsCount;
+        this.maxElectricCarsCount = maxElectricCarsCount;
+    }
 
     public Train(Station homeStation, Station targetStation) {
         this.homeStation = homeStation;

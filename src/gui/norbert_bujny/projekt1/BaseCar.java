@@ -4,12 +4,27 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class BaseCar implements IdRepresentedItem, Serializable {
-    //    TODO kim jest nadawca wagonu?
     private double netWeight;
     private double grossWeight;
     private boolean needsElectricity;
     private String ID;
     private CarTypes carType;
+
+    public BaseCar(
+            Boolean needsElectricity,
+            CarTypes carType,
+            double netWeight,
+            double grossWeight) {
+        if (carType == null) {
+            this.carType = CarTypes.DEFAULT_CAR;
+        } else {
+            this.carType = carType;
+        }
+        this.netWeight = netWeight;
+        this.grossWeight = grossWeight;
+        this.needsElectricity = needsElectricity;
+        this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.CAR_ID.toString());
+    }
 
     public BaseCar(Boolean needsElectricity, CarTypes carType) {
         if (carType == null) {

@@ -1,6 +1,7 @@
 package gui.norbert_bujny.projekt1;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class FluidToxicCargoCar extends ToxicCargoCar {
 
@@ -23,6 +24,20 @@ public class FluidToxicCargoCar extends ToxicCargoCar {
             this.fluidDensity = otherCar.fluidDensity;
             this.hasIntegratedTube = otherCar.hasIntegratedTube;
         }
+    }
+
+    public FluidToxicCargoCar(double netWeight,
+                              double grossWeight,
+                              WayToLoadCargo wayToLoadCargo,
+                              String cargoName,
+                              Set<CargoProtection> cargoProtection,
+                              PollutionLevel pollutionLevel,
+                              String howToNeutralize,
+                              double fluidDensity,
+                              boolean hasIntegratedTube) {
+        super(CarTypes.FLUID_TOXIC_CARGO_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName, cargoProtection, pollutionLevel, howToNeutralize);
+        this.fluidDensity = fluidDensity;
+        this.hasIntegratedTube = hasIntegratedTube;
     }
 
     @Override

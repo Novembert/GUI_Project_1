@@ -25,6 +25,26 @@ public class HeavyFreightCar extends FreightCar {
         }
     }
 
+    public HeavyFreightCar(double netWeight,
+                           double grossWeight,
+                           WayToLoadCargo wayToLoadCargo,
+                           String cargoName,
+                           Set<CargoProtection> cargoProtection) {
+        super(false, CarTypes.HEAVY_FREIGHT_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName);
+        this.cargoProtection = cargoProtection;
+    }
+
+    public HeavyFreightCar(
+            CarTypes carType,
+            double netWeight,
+            double grossWeight,
+            WayToLoadCargo wayToLoadCargo,
+            String cargoName,
+            Set<CargoProtection> cargoProtection) {
+        super(false, carType, netWeight, grossWeight, wayToLoadCargo, cargoName);
+        this.cargoProtection = cargoProtection;
+    }
+
     private void initializeCar() {
         MenuCompatibleEnumWrapper<CargoProtection> enumWrapper = new MenuCompatibleEnumWrapper<>(CargoProtection.values());
 

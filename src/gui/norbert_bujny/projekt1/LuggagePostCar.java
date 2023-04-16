@@ -17,6 +17,15 @@ public class LuggagePostCar extends PostCar {
         this.initializeCar();
     }
 
+    public LuggagePostCar(double netWeight,
+                          double grossWeight,
+                          int maxParcelsCount,
+                          Set<ParcelsTypes> allowedParcelsTypes,
+                          Set<LuggageTypes> allowedLuggageTypes) {
+        super(false, CarTypes.LUGGAGE_POST_CAR, netWeight, grossWeight, maxParcelsCount, allowedParcelsTypes);
+        this.allowedLuggageTypes = allowedLuggageTypes;
+    }
+
     public LuggagePostCar(LuggagePostCar otherCar) {
         super(otherCar);
         if (otherCar != null) {

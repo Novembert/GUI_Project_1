@@ -1,6 +1,7 @@
 package gui.norbert_bujny.projekt1;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class ExplosivesCar extends HeavyFreightCar {
     private PotentialExplosionPower potentialExplosionPower;
@@ -8,6 +9,16 @@ public class ExplosivesCar extends HeavyFreightCar {
     public ExplosivesCar() {
         super(CarTypes.EXPLOSIVES_CAR);
         this.initializeCar();
+    }
+
+    public ExplosivesCar(double netWeight,
+                         double grossWeight,
+                         WayToLoadCargo wayToLoadCargo,
+                         String cargoName,
+                         Set<CargoProtection> cargoProtection,
+                         PotentialExplosionPower potentialExplosionPower) {
+        super(CarTypes.EXPLOSIVES_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName, cargoProtection);
+        this.potentialExplosionPower = potentialExplosionPower;
     }
 
     public ExplosivesCar(ExplosivesCar otherCar) {

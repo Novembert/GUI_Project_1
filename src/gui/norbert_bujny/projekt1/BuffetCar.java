@@ -16,10 +16,22 @@ public class BuffetCar extends BaseCar {
         }
     }
 
+    public BuffetCar(double netWeight,
+                     double grossWeight,
+                     CuisineType cuisineType,
+                     boolean servesHotDrinks,
+                     boolean hasSnackCart) {
+        super(true, CarTypes.BUFFET_CAR, netWeight, grossWeight);
+        this.cuisineType = cuisineType;
+        this.servesHotDrinks = servesHotDrinks;
+        this.hasSnackCart = hasSnackCart;
+    }
+
     public BuffetCar() {
         super(true, CarTypes.BUFFET_CAR);
         this.initializeCar();
     }
+
 
     private void initializeCar() {
         MenuCompatibleEnumWrapper<CuisineType> enumWrapper = new MenuCompatibleEnumWrapper<>(CuisineType.values());

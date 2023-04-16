@@ -6,16 +6,6 @@ public class FreightCar extends BaseCar implements Loadable {
     private WayToLoadCargo wayToLoadCargo;
     private String cargoName;
 
-    public FreightCar() {
-        super(true, CarTypes.FREIGHT_CAR);
-        this.initializeCar();
-    }
-
-    public FreightCar(CarTypes carType) {
-        super(true, carType);
-        this.initializeCar();
-    }
-
     public FreightCar(FreightCar otherCar) {
         super(otherCar);
         if (otherCar != null) {
@@ -27,6 +17,26 @@ public class FreightCar extends BaseCar implements Loadable {
     public FreightCar(Boolean needsElectricity, CarTypes carType) {
         super(needsElectricity, carType);
         this.initializeCar();
+    }
+
+    public FreightCar(double netWeight,
+                      double grossWeight,
+                      WayToLoadCargo wayToLoadCargo,
+                      String cargoName) {
+        super(false, CarTypes.FREIGHT_CAR, netWeight, grossWeight);
+        this.wayToLoadCargo = wayToLoadCargo;
+        this.cargoName = cargoName;
+    }
+
+    public FreightCar(Boolean needsElectricity,
+                      CarTypes carType,
+                      double netWeight,
+                      double grossWeight,
+                      WayToLoadCargo wayToLoadCargo,
+                      String cargoName) {
+        super(needsElectricity, carType, netWeight, grossWeight);
+        this.wayToLoadCargo = wayToLoadCargo;
+        this.cargoName = cargoName;
     }
 
     private void initializeCar() {

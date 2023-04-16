@@ -1,6 +1,7 @@
 package gui.norbert_bujny.projekt1;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class ToxicCargoCar extends HeavyFreightCar {
     private PollutionLevel pollutionLevel;
@@ -14,6 +15,32 @@ public class ToxicCargoCar extends HeavyFreightCar {
     public ToxicCargoCar(CarTypes carType) {
         super(carType);
         this.initializeCar();
+    }
+
+    public ToxicCargoCar(double netWeight,
+                         double grossWeight,
+                         WayToLoadCargo wayToLoadCargo,
+                         String cargoName,
+                         Set<CargoProtection> cargoProtection,
+                         PollutionLevel pollutionLevel,
+                         String howToNeutralize) {
+        super(CarTypes.TOXIC_CARGO_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName, cargoProtection);
+        this.pollutionLevel = pollutionLevel;
+        this.howToNeutralize = howToNeutralize;
+    }
+
+    public ToxicCargoCar(
+            CarTypes carType,
+            double netWeight,
+            double grossWeight,
+            WayToLoadCargo wayToLoadCargo,
+            String cargoName,
+            Set<CargoProtection> cargoProtection,
+            PollutionLevel pollutionLevel,
+            String howToNeutralize) {
+        super(carType, netWeight, grossWeight, wayToLoadCargo, cargoName, cargoProtection);
+        this.pollutionLevel = pollutionLevel;
+        this.howToNeutralize = howToNeutralize;
     }
 
     public ToxicCargoCar(ToxicCargoCar otherCar) {

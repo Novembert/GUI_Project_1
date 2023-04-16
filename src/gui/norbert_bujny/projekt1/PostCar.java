@@ -18,6 +18,30 @@ public class PostCar extends BaseCar {
         this.initializeCar();
     }
 
+    public PostCar(
+            double netWeight,
+            double grossWeight,
+            int maxParcelsCount,
+            Set<ParcelsTypes> allowedParcelsTypes
+    ) {
+        super(true, CarTypes.POST_CAR, netWeight, grossWeight);
+        this.maxParcelsCount = maxParcelsCount;
+        this.allowedParcelsTypes = allowedParcelsTypes;
+    }
+
+    public PostCar(
+            boolean needsElectricity,
+            CarTypes carType,
+            double netWeight,
+            double grossWeight,
+            int maxParcelsCount,
+            Set<ParcelsTypes> allowedParcelsTypes
+    ) {
+        super(needsElectricity, carType, netWeight, grossWeight);
+        this.maxParcelsCount = maxParcelsCount;
+        this.allowedParcelsTypes = allowedParcelsTypes;
+    }
+
     public PostCar(PostCar otherCar) {
         super(otherCar);
         this.maxParcelsCount = otherCar.maxParcelsCount;

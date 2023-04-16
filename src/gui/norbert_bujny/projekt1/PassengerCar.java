@@ -15,6 +15,21 @@ public class PassengerCar extends BaseCar implements Loadable {
         this.initializeCar();
     }
 
+    public PassengerCar(double netWeight,
+                        double grossWeight,
+                        boolean hasToilet,
+                        boolean hasCompartments,
+                        int seats,
+                        PassengerCarClass passengerCarClass) {
+        super(true, CarTypes.PASSENGER_CAR, netWeight, grossWeight);
+        this.takenSeats = 0;
+        this.hasToilet = hasToilet;
+        this.hasCompartments = hasCompartments;
+        this.seats = seats;
+        this.carClass = passengerCarClass;
+        this.expectedPassengerWeight = this.calculateExpectedPassengerWeight();
+    }
+
     public PassengerCar(CarTypes carType) {
         super(true, carType);
         this.initializeCar();

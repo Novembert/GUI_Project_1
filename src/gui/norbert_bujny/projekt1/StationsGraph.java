@@ -67,7 +67,7 @@ public class StationsGraph {
     }
 
     public void addConnection(Station station, Station targetStation) {
-        Connection stationsConnection = new Connection(station, targetStation, 100);
+        Connection stationsConnection = new Connection(station, targetStation, 15);
         this.stationsConnections.get(station).add(stationsConnection);
         this.stationsConnections.get(targetStation).add(stationsConnection);
     }

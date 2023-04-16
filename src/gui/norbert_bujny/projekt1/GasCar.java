@@ -24,6 +24,17 @@ public class GasCar extends FreightCar {
         }
     }
 
+    public GasCar(double netWeight,
+                  double grossWeight,
+                  WayToLoadCargo wayToLoadCargo,
+                  String cargoName,
+                  double gasDensity,
+                  boolean isDangerous) {
+        super(false, CarTypes.GAS_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName);
+        this.gasDensity = gasDensity;
+        this.isDangerous = isDangerous;
+    }
+
     private void initializeCar() {
         this.gasDensity = Utilities.handleUserRequiredInputDouble("Gęstość gazu: ");
         this.isDangerous = Utilities.handleUserRequiredBooleanInput("Czy przewożony gaz jest niebezpieczny?");

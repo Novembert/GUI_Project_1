@@ -7,13 +7,24 @@ public class FluidsCar extends FreightCar {
     private boolean hasIntegratedTube;
 
     public FluidsCar() {
-        super(CarTypes.FLUIDS_CAR);
+        super(false, CarTypes.FLUIDS_CAR);
         this.initializeCar();
     }
 
     public FluidsCar(CarTypes carType) {
-        super(carType);
+        super(false, carType);
         this.initializeCar();
+    }
+
+    public FluidsCar(double netWeight,
+                     double grossWeight,
+                     WayToLoadCargo wayToLoadCargo,
+                     String cargoName,
+                     double fluidDensity,
+                     boolean hasIntegratedTube) {
+        super(false, CarTypes.FLUIDS_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName);
+        this.fluidDensity = fluidDensity;
+        this.hasIntegratedTube = hasIntegratedTube;
     }
 
     public FluidsCar(FluidsCar otherCar) {

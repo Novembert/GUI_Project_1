@@ -24,6 +24,17 @@ public class RefrigeratorCar extends FreightCar {
         }
     }
 
+    public RefrigeratorCar(double netWeight,
+                           double grossWeight,
+                           WayToLoadCargo wayToLoadCargo,
+                           String cargoName,
+                           boolean hasShelves,
+                           double celsiusDegrees) {
+        super(true, CarTypes.REFRIGERATOR_CAR, netWeight, grossWeight, wayToLoadCargo, cargoName);
+        this.hasShelves = hasShelves;
+        this.celsiusDegrees = celsiusDegrees;
+    }
+
     private void initializeCar() {
         this.hasShelves = Utilities.handleUserRequiredBooleanInput("Czy ma pólki? ");
         this.celsiusDegrees = Utilities.handleUserRequiredInputDouble("Temperatura (°C)");

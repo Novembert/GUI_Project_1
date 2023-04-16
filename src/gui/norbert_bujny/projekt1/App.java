@@ -25,7 +25,7 @@ public final class App {
         return instance;
     }
 
-    public void initialize() {
+    public void initialize(boolean provideDefaultConfiguration) {
         this.stationsMap = new StationsGraph();
         this.carsCollection = new CarsCollection();
         this.trainsCollection = new TrainsCollection();
@@ -33,6 +33,10 @@ public final class App {
         this.trainsDirector = new TrainsDirector(stationsMap, trainsCollection);
 
         this.initializeMenus();
+
+        if (provideDefaultConfiguration) {
+            Initializer.initialize(this);
+        }
     }
 
     public void run() {
