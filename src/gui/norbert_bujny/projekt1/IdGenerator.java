@@ -16,7 +16,7 @@ public abstract class IdGenerator {
         int id = Integer.parseInt(fieldValue.substring(2));
         id = id + 1;
         String idPrefix = fieldValue.substring(0, 2);
-        IdGenerator.carID = idPrefix + id;
+        setIdValue(field, idPrefix + id);
     }
 
     private static String getIdValue(String field) {
@@ -29,5 +29,15 @@ public abstract class IdGenerator {
             System.err.println(e.getMessage());
         }
         return fieldValue;
+    }
+
+    private static void setIdValue(String field, String value) {
+        try {
+            Field idField = IdGenerator.class.getDeclaredField(field);
+            idField.setAccessible(true);
+            idField.set(null, value);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

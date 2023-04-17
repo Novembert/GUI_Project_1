@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class TrainCarsMap implements Serializable {
     private static TrainCarsMap instance;
+    private Map<Train, List<BaseCar>> trainCarsMap = new HashMap<>();
 
     @Override
     public String toString() {
@@ -17,10 +18,7 @@ public class TrainCarsMap implements Serializable {
                 '}';
     }
 
-    private Map<Train, List<BaseCar>> trainCarsMap = new HashMap<>();
-
     private TrainCarsMap() {
-
     }
 
     public Map<Train, List<BaseCar>> getTrainCarsMap() {
@@ -56,7 +54,12 @@ public class TrainCarsMap implements Serializable {
     }
 
     public List<BaseCar> getCars(Train t) {
-        return this.trainCarsMap.get(t);
+        try {
+            List<BaseCar> carsList = this.trainCarsMap.get(t);
+            return carsList;
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
+        }
     }
 
     public List<BaseCar> getAllCars() {

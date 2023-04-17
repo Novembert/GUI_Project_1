@@ -82,7 +82,6 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     }
 
     public void printTrainsList() {
-//        System.out.println(this.trainCarsMap.getTrainCarsMap());
         System.out.println(this.trainsCollection.getItemsList());
     }
 

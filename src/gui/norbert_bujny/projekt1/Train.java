@@ -98,7 +98,12 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     }
 
     public List<BaseCar> getCars() {
-        return TrainCarsMap.getInstance().getCars(this);
+        try {
+            List<BaseCar> carsList = TrainCarsMap.getInstance().getCars(this);
+            return carsList;
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
+        }
     }
 
     private double sumCarsGrossWeight() {
@@ -117,7 +122,6 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
             throw new TooManyElectricCarsException();
         if (car.getGrossWeight() >= this.maxWeight - this.sumCarsGrossWeight())
             throw new TooHeavyCarException();
-
         return true;
     }
 
@@ -232,6 +236,12 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     }
 
     private String getCarsInfo(boolean extended) {
+        List<BaseCar> carsList = this.getCars();
+
+        if (carsList == null || carsList.size() == 0) {
+            return "Wagony: Brak wagonów";
+        }
+
         return "Wagony: " + this.getCars()
                 .stream()
                 .sorted(new Comparator<BaseCar>() {

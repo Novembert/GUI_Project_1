@@ -1,8 +1,6 @@
 package gui.norbert_bujny.projekt1;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Initializer {
     public static void initialize(App app) {
@@ -112,11 +110,102 @@ public class Initializer {
         stationsMap.addStationToList(new Station("Bydgoszcz Główna", "BYD"), Arrays.asList("PRD", "KCY"));
         stationsMap.addStationToList(new Station("Bydgoszcz Wschód", "BWS"), Arrays.asList("BYD"));
 
+
         /**
-         * Wagony i pociągi
+         * Wagony
          */
+        List<BaseCar> premadeCarsPrototypes = new ArrayList<>();
+        premadeCarsPrototypes.add(new PassengerCar(1000, 3000, true, false, 50, PassengerCarClass.SECOND));
+        premadeCarsPrototypes.add(new PassengerCar(1300, 3200, true, true, 30, PassengerCarClass.FIRST));
+
+        premadeCarsPrototypes.add(new BuffetCar(2000, 4500, CuisineType.INTERNATIONAL, false, true));
+        premadeCarsPrototypes.add(new BuffetCar(2000, 4600, CuisineType.CHINESE, true, false));
+
+        premadeCarsPrototypes.add(new RefrigeratorCar(1300, 6000, WayToLoadCargo.SIDE_LOAD, "Lody", true, -20));
+        premadeCarsPrototypes.add(new RefrigeratorCar(1280, 5500, WayToLoadCargo.SIDE_LOAD, "Mrożone jedzenie", true, -10));
+
+        premadeCarsPrototypes.add(new FreightCar(1200, 4600, WayToLoadCargo.TOP_LOAD, "Części samochodowe"));
+        premadeCarsPrototypes.add(new FreightCar(1200, 4800, WayToLoadCargo.SIDE_LOAD, "Zwierzęta"));
+
+        premadeCarsPrototypes.add(new HeavyFreightCar(2000, 8000, WayToLoadCargo.TOP_LOAD, "Węgiel", new HashSet<>(Arrays.asList(CargoProtection.SAFETY_NET))));
+        premadeCarsPrototypes.add(new HeavyFreightCar(2300, 9000, WayToLoadCargo.SIDE_LOAD, "Słonie", new HashSet<>(Arrays.asList(CargoProtection.SECURITY_BARS))));
+
+        premadeCarsPrototypes.add(new PostCar(900, 3000, 20, new HashSet<>(Arrays.asList(ParcelsTypes.ENVELOPE, ParcelsTypes.MEDIUM, ParcelsTypes.SMALL))));
+
+        premadeCarsPrototypes.add(new LuggagePostCar(1100, 3200, 40, new HashSet<>(Arrays.asList(ParcelsTypes.LARGE)), new HashSet<>(Arrays.asList(LuggageTypes.BIKE, LuggageTypes.FURNITURE))));
+
+        premadeCarsPrototypes.add(new GasCar(700, 1000, WayToLoadCargo.TOP_LOAD, "LPG", 100.20, true));
+
+        premadeCarsPrototypes.add(new FluidsCar(700, 3000, WayToLoadCargo.SIDE_LOAD, "Woda", 50.12, true));
+        premadeCarsPrototypes.add(new FluidsCar(700, 3000, WayToLoadCargo.SIDE_LOAD, "Mleko", 70.25, false));
+
+        premadeCarsPrototypes.add(new ExplosivesCar(800, 3100, WayToLoadCargo.SIDE_LOAD, "TNT", new HashSet<>(Arrays.asList(CargoProtection.SAFETY_ROPES)), PotentialExplosionPower.MEDIUM));
+
+        premadeCarsPrototypes.add(new ToxicCargoCar(700, 3000, WayToLoadCargo.TOP_LOAD, "Grzyby", new HashSet<>(), PollutionLevel.LOW, "Spalanie"));
+
+        premadeCarsPrototypes.add(new FluidToxicCargoCar(700, 3200, WayToLoadCargo.TOP_LOAD, "Ropa", new HashSet<>(Arrays.asList(CargoProtection.SAFETY_NET)), PollutionLevel.HIGH, "Należy dostarczyć na wylewisko", 200, true));
+
+        /**
+         * Pociagi
+         */
+
         TrainsCollection trainsCollection = app.getTrainsCollection();
 
-        List<BaseCar> premadeCarsPrototypes = new ArrayList<>();
+        try {
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("POZ"), stationsMap.searchStationByCode("BYD"), "Polonia", 250000.00, 15, 5));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("GWI"), stationsMap.searchStationByCode("KRŻ"), "Krzyżak", 220000.00, 12, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("BUK"), stationsMap.searchStationByCode("OBK"), "Obornik", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("OBK"), stationsMap.searchStationByCode("BUK"), "Obornik II", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("ROK"), stationsMap.searchStationByCode("KOŁ"), "Rokitnik", 195000.75, 14, 7));
+
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("JAR"), stationsMap.searchStationByCode("KOŚ"), "Mieszko", 250000.00, 15, 5));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("BAR"), stationsMap.searchStationByCode("WŁO"), "Chrobry", 220000.00, 12, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("MOG"), stationsMap.searchStationByCode("ZŁT"), "Łokietek", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("GRN"), stationsMap.searchStationByCode("LUB"), "Mieszko II", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SŁW"), stationsMap.searchStationByCode("STF"), "Karol", 195000.75, 14, 7));
+
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("BWS"), stationsMap.searchStationByCode("ORZ"), "Lubczyk", 250000.00, 15, 5));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("CHŁ"), stationsMap.searchStationByCode("WOL"), "Czosnek", 220000.00, 12, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("KOŁ"), stationsMap.searchStationByCode("SUL"), "Kurkuma", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("CZE"), stationsMap.searchStationByCode("STZ"), "Kminek", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SKW"), stationsMap.searchStationByCode("KRZ"), "Szafran", 195000.75, 14, 7));
+
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("GDK"), stationsMap.searchStationByCode("NWT"), "Hermes", 250000.00, 15, 5));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("KCY"), stationsMap.searchStationByCode("ORZ"), "Hefajstos", 220000.00, 12, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("RAK"), stationsMap.searchStationByCode("JAR"), "Posejdon", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SZO"), stationsMap.searchStationByCode("KĄK"), "Zeus", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("WRO"), stationsMap.searchStationByCode("BIE"), "Prometeusz", 195000.75, 14, 7));
+
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("ORZ"), stationsMap.searchStationByCode("WRO"), "Rakieta", 250000.00, 15, 5));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("ORZ"), stationsMap.searchStationByCode("BAR"), "Tesla", 220000.00, 12, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("KOŁ"), stationsMap.searchStationByCode("GWI"), "Ferrari", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SUL"), stationsMap.searchStationByCode("MOG"), "Lamborghini", 225000.25, 15, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("BUK"), stationsMap.searchStationByCode("GWI"), "Bentley", 195000.75, 14, 7));
+
+        } catch (Exception e) {
+            System.out.println("Błąd w konfiguracji pociągów");
+            System.out.println(e);
+        }
+        /**
+         * Pociągi i wagony
+         */
+        CarsCollection carsCollection = app.getCarsCollection();
+
+        for (Train t : trainsCollection.getMap().values()) {
+            TrainCarsMap.getInstance().addTrain(t);
+            Random random = new Random();
+            int carsCount = random.nextInt(6) + 5;
+
+            while (t.getCars().size() < carsCount) {
+                int randomCar = random.nextInt(premadeCarsPrototypes.size());
+                BaseCar newCar = premadeCarsPrototypes.get(randomCar).clone();
+                carsCollection.addItem(newCar);
+                try {
+                    t.attachCar(premadeCarsPrototypes.get(randomCar).clone());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
     }
 }
