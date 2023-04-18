@@ -1,8 +1,10 @@
 package gui.norbert_bujny.projekt1;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
-public class TrainsDirector {
+public class TrainsDirector implements Runnable {
     private StationsGraph stationsMap;
     private TrainsCollection trainsCollection;
 
@@ -17,6 +19,18 @@ public class TrainsDirector {
         } catch (Exception e) {
             System.out.println("Uwaga! Pociąg " + train.getID() + " nie może znaleźć trasy z " + source.getCode() + " do " + destination.getCode());
             throw new PathNotFoundException();
+        }
+    }
+
+    public void run() {
+        if (trainsCollection.getMap().values().isEmpty()) return;
+        for (Train t : trainsCollection.getMap().values()) {
+            if (t.getTrainRideState() == TrainRideState.READY_TO_GO ||
+                    t.getTrainRideState() == TrainRideState.READY_TO_START_NEW_TRAVEL ||
+                    t.getTrainRideState() == TrainRideState.ARRIVED_TO_STATION ||
+                    t.getTrainRideState() == TrainRideState.ARRIVED_TO_FINAL_STATION) {
+                t.tryToRun();
+            }
         }
     }
 }

@@ -97,6 +97,7 @@ public class PassengerCar extends BaseCar implements Loadable {
         return super.toString() +
                 ",\nKlasa: " + this.carClass +
                 ",\nIlość miejsc: " + this.seats +
+                ",\nIlość zajętych miejsc: " + this.takenSeats +
                 ",\nPosiada przedziały: " + Utilities.getPolishTranslationForBooleanValues(hasCompartments) +
                 ",\nPosiada toaletę: " + Utilities.getPolishTranslationForBooleanValues(hasToilet);
     }

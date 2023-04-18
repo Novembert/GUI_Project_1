@@ -5,6 +5,5 @@ public class Presentation {
         App appInstance = App.getInstance();
         appInstance.initialize(true);
         appInstance.run();
-
     }
 }

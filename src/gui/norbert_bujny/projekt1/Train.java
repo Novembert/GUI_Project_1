@@ -2,10 +2,12 @@ package gui.norbert_bujny.projekt1;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
-public class Train extends Thread implements IdRepresentedItem, Serializable {
+public class Train implements IdRepresentedItem, Serializable {
     /**
      * train data
      */
@@ -22,12 +24,14 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
 
     private Station targetStation;
     private Station currentStation;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     /**
      * ride data
      */
     private List<Connection> currentPath;
     private Queue<Connection> currentPathStationsQueue;
+    private TrainRideState trainRideState;
 
     private double speed;
     private double coveredCurrentPathDistance;
@@ -52,6 +56,7 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         this.maxWeight = maxWeight;
         this.maxCarsCount = maxCarsCount;
         this.maxElectricCarsCount = maxElectricCarsCount;
+        this.trainRideState = TrainRideState.CREATED;
     }
 
     public Train(Station homeStation, Station targetStation) {
@@ -61,6 +66,7 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
         this.speed = 100;
         this.actionsQueue = new LinkedList<>();
+        this.trainRideState = TrainRideState.CREATED;
         this.initializeTrain();
     }
 
@@ -71,7 +77,11 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
         this.maxElectricCarsCount = Utilities.handleUserRequiredInputInt("Maksymalna liczba wagonów wymagających podłączenia do sieci elektrycznej: ");
     }
 
-    public void runTrain() {
+    public void runTravel() throws IllegalTrainRideStateException {
+        if (this.trainRideState != TrainRideState.CREATED && this.trainRideState != TrainRideState.READY_TO_START_NEW_TRAVEL) {
+            throw new IllegalTrainRideStateException("Aktualny stan pociągu nie pozwala na uruchomienie go.");
+        }
+
         try {
             if (this.currentStation.equals(this.targetStation)) {
                 this.currentPath = App.getInstance().getTrainsDirector().requestPath(this, this.targetStation, this.homeStation);
@@ -82,8 +92,9 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
             }
 
             this.wholeTravelDistance = this.getSumPathDistance(this.currentPath);
+            this.trainRideState = TrainRideState.READY_TO_GO;
 
-            this.start();
+            this.tryToRun();
         } catch (PathNotFoundException e) {
             System.out.println(e);
         }
@@ -95,6 +106,66 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
 
     public void detachCar(BaseCar car) {
         TrainCarsMap.getInstance().detachCar(this, car);
+    }
+
+    public TrainRideState getTrainRideState() {
+        return this.trainRideState;
+    }
+
+    public void setTrainRideState(TrainRideState state) {
+        this.trainRideState = state;
+    }
+
+    public Station getCurrentStation() {
+        return currentStation;
+    }
+
+    public Station getHomeStation() {
+        return homeStation;
+    }
+
+    public Station getTargetStation() {
+        return targetStation;
+    }
+
+    public void setCurrentStation(Station currentStation) {
+        this.currentStation = currentStation;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getKMhToKMsMultiplier() {
+        return this.KMhToKMsMultiplier;
+    }
+
+    public double getCoveredCurrentPathDistance() {
+        return coveredCurrentPathDistance;
+    }
+
+    public double getCurrentPathDistance() {
+        return currentPathDistance;
+    }
+
+    public double getCoveredWholeTravelDistance() {
+        return coveredWholeTravelDistance;
+    }
+
+    public void setCoveredCurrentPathDistance(double distance) {
+        this.coveredCurrentPathDistance = distance;
+    }
+
+    public void setCurrentPathDistance(double currentPathDistance) {
+        this.currentPathDistance = currentPathDistance;
+    }
+
+    public void setCoveredWholeTravelDistance(double coveredWholeTravelDistance) {
+        this.coveredWholeTravelDistance = coveredWholeTravelDistance;
     }
 
     public List<BaseCar> getCars() {
@@ -132,62 +203,46 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
                 .size();
     }
 
-    public void run() {
-        Connection currentConnection = this.currentPathStationsQueue.poll();
-
+    public void tryToRun() {
         synchronized (this) {
-            if (currentConnection.getIsUsed()) {
-                currentConnection.getInQueue(this);
-            } else {
-                this.rideToStation(currentConnection);
+            switch (this.trainRideState) {
+                case RUNNING:
+                    System.out.println("Coś poszło nie tak. Pociąg: " + this.getID());
+                    break;
+                case READY_TO_GO:
+                    Connection currentConnection = this.currentPathStationsQueue.poll();
+
+                    if (currentConnection.getIsUsed()) {
+                        currentConnection.jumpInQueue(this);
+                        this.trainRideState = TrainRideState.WAITING_IN_QUEUE;
+                    } else {
+                        executor.submit(new TrainRideAction(this, currentConnection));
+                    }
+                    break;
+                case ARRIVED_TO_STATION:
+                    this.trainRideState = TrainRideState.WAITING_AT_STATION;
+
+                    executor.submit(new TrainWaitAndSwitchStateAction(this, 200, TrainRideState.READY_TO_GO));
+                    break;
+                case ARRIVED_TO_FINAL_STATION:
+                    this.trainRideState = TrainRideState.WAITING_AT_FINAL_STATION;
+                    executor.submit(new TrainWaitAndSwitchStateAction(this, 3000, TrainRideState.READY_TO_START_NEW_TRAVEL));
+                    break;
+                case READY_TO_START_NEW_TRAVEL:
+                    try {
+                        this.runTravel();
+                    } catch (IllegalTrainRideStateException e) {
+                        System.out.println("Nie udało się uruchomić pociagu o ID: " + this.getID() + ".\n" + e.getMessage());
+                        this.trainRideState = TrainRideState.STOPPED;
+                    }
+                default:
+                    break;
             }
         }
     }
 
     public void addAction(Command newActionCommand) {
         this.actionsQueue.add(newActionCommand);
-    }
-
-    private void rideToStation(Connection usedConnection) {
-        Random random = new Random();
-
-        Station targetStation = usedConnection.getTargetStation(this.currentStation);
-        usedConnection.setIsUsed(true);
-        this.coveredCurrentPathDistance = 0;
-        this.currentPathDistance = usedConnection.getDistance();
-
-        while (this.coveredCurrentPathDistance < this.currentPathDistance) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-//                TODO obsluzyc to jakos
-                throw new RuntimeException(e);
-            }
-
-            double diff = this.KMhToKMsMultiplier * this.speed;
-            this.coveredCurrentPathDistance = this.coveredCurrentPathDistance + diff;
-            this.coveredWholeTravelDistance = this.coveredWholeTravelDistance + diff;
-
-            this.speed = random.nextBoolean() ? this.speed - this.speed * 0.03 : this.speed + this.speed * 0.03;
-        }
-
-        this.currentStation = targetStation;
-        usedConnection.setIsUsed(false);
-        this.speed = 100;
-
-        try {
-            this.executeQueuedActions();
-            if (targetStation.equals(this.targetStation) || targetStation.equals(this.homeStation)) {
-                Thread.sleep(30000);
-                this.runTrain();
-            } else {
-                Thread.sleep(200);
-                this.start();
-            }
-        } catch (InterruptedException e) {
-//                TODO obsluzyc to jakos
-            throw new RuntimeException(e);
-        }
     }
 
     private Queue<Connection> generateStationsQueue(TrainRideDirection direction) {
@@ -218,7 +273,7 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
                 ",\n" + this.getCarsInfo(false);
     }
 
-    private void executeQueuedActions() {
+    public void executeQueuedActions() {
         while (!this.actionsQueue.isEmpty()) {
             Command currentCommand = this.actionsQueue.poll();
             currentCommand.execute();
@@ -256,8 +311,9 @@ public class Train extends Thread implements IdRepresentedItem, Serializable {
     private String getTravelInfo() {
         String result = "Aktualny przejazd: " + this.currentPath;
         result += "\nStan trasy: \n";
-        if (this.isAlive()) {
-            result += "Postęp drogi do następnej stacji: " + Utilities.visualizeProgress(this.coveredCurrentPathDistance, this.currentPathDistance)
+        if (this.trainRideState == TrainRideState.RUNNING) {
+            result += "Aktualny odcinek: " + Arrays.asList(this.currentPathStationsQueue.peek());
+            result += "\nPostęp drogi do następnej stacji: " + Utilities.visualizeProgress(this.coveredCurrentPathDistance, this.currentPathDistance)
                     + ",\n" + "Postęp całej trasy: " + Utilities.visualizeProgress(this.coveredWholeTravelDistance, this.wholeTravelDistance);
         } else {
             result += "Pociąg stoi na stacji: " + this.currentStation.toString();

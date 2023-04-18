@@ -201,7 +201,7 @@ public class Initializer {
                 BaseCar newCar = premadeCarsPrototypes.get(randomCar).clone();
                 carsCollection.addItem(newCar);
                 try {
-                    t.attachCar(premadeCarsPrototypes.get(randomCar).clone());
+                    t.attachCar(newCar);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

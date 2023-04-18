@@ -49,15 +49,6 @@ public final class CarsMenuCreator extends GenericMenuCreator<CarsCommandsReceiv
             }
         }));
 
-        mainMenu.menuItems.add(new MenuItem(6, "Przypisz do pociągu", new Command() {
-            @Override
-            public void execute() {
-//                TODO
-//                receiver.switchSubmenu("trains");
-            }
-        }));
-
-
         return mainMenu;
     }
 }

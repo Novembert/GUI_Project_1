@@ -1,3 +1,0 @@
-Poznań;POZ;WAW
-Warszawa Centralna;WAW;POZ,WMI
-Warszawa Modlin;WMI;WAW

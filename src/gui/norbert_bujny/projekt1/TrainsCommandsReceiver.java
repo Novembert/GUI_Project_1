@@ -110,10 +110,10 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
             try {
-                train.runTrain();
+                train.runTravel();
                 System.out.println("Uruchomiono pociąg");
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
@@ -122,15 +122,14 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
 
     public void runAllTrains() {
         int count = 0;
-        int all = this.trainsCollection.getMap().size();
         for (String trainId : this.trainsCollection.getMap().keySet()) {
             try {
                 Train t = this.trainsCollection.getItem(trainId);
-                if (!t.isAlive()) {
-                    t.runTrain();
-                    count++;
-                    System.out.println("Uruchomiono " + trainId);
-                }
+                t.runTravel();
+                count++;
+                System.out.println("Uruchomiono " + trainId);
+            } catch (IllegalTrainRideStateException e) {
+                System.out.println("Nie udało się uruchomić pociagu o ID: " + trainId + ".\n" + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Nie udało się uruchomić pociagu o ID: " + trainId);
             }
@@ -142,14 +141,10 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     public void loadCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-            Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu");
+            Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu", train);
 
-            if (train.isAlive()) {
-                train.addAction(car.initLoadCargo());
-            } else {
-                Command action = car.initLoadCargo();
-                action.execute();
-            }
+            Command action = car.initLoadCargo();
+            action.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -158,16 +153,10 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
     public void unloadCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-            Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu");
+            Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu", train);
 
-            if (train.isAlive()) {
-                train.addAction(car.initUnloadCargo());
-                System.out.println("Pociąg jest w drodze. Akcja zostanie wykonana kiedy pociąg dotrze do następnej stacji.");
-            } else {
-                Command action = car.initUnloadCargo();
-                action.execute();
-                System.out.println("Akcja wykonana.");
-            }
+            Command action = car.initUnloadCargo();
+            action.execute();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

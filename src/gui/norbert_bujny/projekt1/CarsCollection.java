@@ -30,13 +30,13 @@ public class CarsCollection extends MapWrapper<BaseCar> {
         return item;
     }
 
-    public Loadable getLoadableCarWithPrompt(String prompt) throws ItemNotFoundException {
+    public Loadable getLoadableCarWithPrompt(String prompt, Train train) throws ItemNotFoundException {
         Loadable item = null;
         int retry = 0;
         int MAX_RETRY = 3;
         do {
             try {
-                System.out.println(this.getLoadableCarsList());
+                System.out.println(TrainCarsMap.getInstance().getLoadableCarsList(train));
                 item = (Loadable) this.getItem(Utilities.handleUserRequiredInput(prompt));
             } catch (ItemNotFoundException e) {
                 retry++;
@@ -88,15 +88,6 @@ public class CarsCollection extends MapWrapper<BaseCar> {
                 .values()
                 .stream()
                 .filter(c -> TrainCarsMap.getInstance().getAllCars().contains(c))
-                .map(c -> c.toString())
-                .collect(Collectors.joining("\n===\n"));
-    }
-
-    private String getLoadableCarsList() {
-        return this.map
-                .values()
-                .stream()
-                .filter(c -> c instanceof Loadable)
                 .map(c -> c.toString())
                 .collect(Collectors.joining("\n===\n"));
     }

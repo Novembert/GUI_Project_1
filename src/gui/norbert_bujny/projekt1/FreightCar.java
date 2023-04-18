@@ -48,14 +48,14 @@ public class FreightCar extends BaseCar implements Loadable {
 
     public Command initLoadCargo() {
         double freeWeight = this.getGrossWeight() - this.getNetWeight();
-        System.out.println("Udźwig do wykorzystania: " + freeWeight + "/" + this.getGrossWeight());
+        System.out.println("Poziom załadowania: " + this.getNetWeight() + "/" + this.getGrossWeight());
 
         double newCargoWeight = Utilities.handleUserRequiredInputDouble("Ile towaru załadować?");
 
         return new Command() {
             @Override
             public void execute() {
-                setNetWeight(newCargoWeight > freeWeight ? getGrossWeight() : newCargoWeight);
+                setNetWeight(newCargoWeight + getNetWeight() > freeWeight ? getGrossWeight() : newCargoWeight + getNetWeight());
             }
         };
     }

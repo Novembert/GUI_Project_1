@@ -1,5 +1,11 @@
 package gui.norbert_bujny.projekt1;
 
+import java.sql.Time;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public final class App {
     private static App instance;
 
@@ -7,6 +13,7 @@ public final class App {
     private CarsCollection carsCollection;
     private TrainsCollection trainsCollection;
     private TrainsDirector trainsDirector;
+    private TrainsReportGenerator trainsReportGenerator;
     private Saves saves;
     private Menu menu;
 
@@ -31,12 +38,15 @@ public final class App {
         this.trainsCollection = new TrainsCollection();
         this.saves = new Saves();
         this.trainsDirector = new TrainsDirector(stationsMap, trainsCollection);
+        this.trainsReportGenerator = new TrainsReportGenerator(trainsCollection);
 
         this.initializeMenus();
 
         if (provideDefaultConfiguration) {
             Initializer.initialize(this);
         }
+
+        this.runScheduledTasks();
     }
 
     public void run() {
@@ -69,5 +79,11 @@ public final class App {
 
     public TrainCarsMap getTrainCarsMap() {
         return TrainCarsMap.getInstance();
+    }
+
+    private void runScheduledTasks() {
+        ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(10);
+        executor.scheduleAtFixedRate(this.trainsReportGenerator, 5, 5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this.trainsDirector, 1, 1, TimeUnit.SECONDS);
     }
 }

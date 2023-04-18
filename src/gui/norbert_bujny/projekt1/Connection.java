@@ -30,7 +30,8 @@ public class Connection implements Serializable {
         this.isUsed = isUsed;
         if (!isUsed && !this.trainsQueue.isEmpty()) {
             Train t = trainsQueue.poll();
-            t.start();
+            t.setTrainRideState(TrainRideState.READY_TO_GO);
+            t.tryToRun();
         }
     }
 
@@ -38,7 +39,7 @@ public class Connection implements Serializable {
         return isUsed;
     }
 
-    public void getInQueue(Train t) {
+    public void jumpInQueue(Train t) {
         this.trainsQueue.add(t);
     }
 

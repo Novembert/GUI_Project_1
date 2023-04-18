@@ -41,6 +41,15 @@ public class TrainCarsMap implements Serializable {
         this.trainCarsMap.remove(t);
     }
 
+    public void removeCar(BaseCar car) {
+        Train trainWithCar = this.trainCarsMap
+                .keySet()
+                .stream()
+                .filter(train -> trainCarsMap.get(train).contains(car))
+                .collect(Collectors.toList()).get(0);
+        this.detachCar(trainWithCar, car);
+    }
+
     public void addTrain(Train t) {
         this.trainCarsMap.put(t, new ArrayList<>());
     }
@@ -68,6 +77,15 @@ public class TrainCarsMap implements Serializable {
                 .stream()
                 .flatMap(c -> c.stream())
                 .collect(Collectors.toList());
+    }
+
+    public String getLoadableCarsList(Train train) {
+        return this.trainCarsMap
+                .get(train)
+                .stream()
+                .filter(c -> c instanceof Loadable)
+                .map(c -> c.toString())
+                .collect(Collectors.joining("\n===\n"));
     }
 
     private void detachAllCars(Train t) {
