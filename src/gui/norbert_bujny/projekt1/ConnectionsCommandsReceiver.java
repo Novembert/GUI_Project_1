@@ -14,6 +14,10 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
         String code = Utilities.handleUserRequiredInput("Podaj kod stacji startowej: ");
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
 
+        this.runConnectionCreator(code, targetCode);
+    }
+
+    public void runConnectionCreator(String code, String targetCode) {
         try {
             this.stationsMap.addConnection(code, targetCode);
             System.out.println("Dodano 1 połączenie");
@@ -25,6 +29,11 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
     public void initializeMultipleConnectionsCreator() {
         String code = Utilities.handleUserRequiredInput("Podaj kod stacji startowej: ");
         List<String> targetCodes = Utilities.handleUserRequiredListInput("Podaj kody stacji docelowych (oddzielone przecinkiem): ");
+
+        this.runMultipleConnectionsCreator(code, targetCodes);
+    }
+
+    public void runMultipleConnectionsCreator(String code, List<String> targetCodes) {
         int count = 0;
 
         try {
@@ -41,6 +50,11 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
     public void initializeConnectingToMultipleSourceStations() {
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
         List<String> codes = Utilities.handleUserRequiredListInput("Podaj kody stacji startowych (oddzielone przecinkiem): ");
+
+        this.runConnectingToMultipleSourceStations(targetCode, codes);
+    }
+
+    public void runConnectingToMultipleSourceStations(String targetCode, List<String> codes) {
         int count = 0;
 
         try {
@@ -56,10 +70,14 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
         System.out.println("Dodano " + count + " " + Utilities.getCorrectSingularOrPluralForm(count, "połączenie", "połączenia", "połączeń"));
     }
 
-    public void printPath() {
+    public void initializePrintPath() {
         String code = Utilities.handleUserRequiredInput("Podaj kod stacji startowej: ");
         String targetCode = Utilities.handleUserRequiredInput("Podaj kod stacji docelowej: ");
 
+        this.runPrintPath(code, targetCode);
+    }
+
+    public void runPrintPath(String code, String targetCode) {
         try {
             List<Connection> path = stationsMap.findPath(code, targetCode);
             String pathString = "";

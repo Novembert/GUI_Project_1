@@ -43,7 +43,7 @@ public class ConnectionsMenuCreator  extends GenericMenuCreator<ConnectionsComma
         menu.menuItems.add( new MenuItem(5, "Wyszukaj trasę", new Command() {
             @Override
             public void execute() {
-                receiver.printPath();
+                receiver.initializePrintPath();
                 receiver.switchSubmenu("main");
             }
         }));

@@ -310,7 +310,7 @@ public class Train implements IdRepresentedItem, Serializable {
 
     private String getTravelInfo() {
         String result = "Aktualny przejazd: " + this.currentPath;
-        result += "\nStan trasy: \n";
+        result += "\nStan trasy: " + this.trainRideState + "\n";
         if (this.trainRideState == TrainRideState.RUNNING) {
             result += "Aktualny odcinek: " + Arrays.asList(this.currentPathStationsQueue.peek());
             result += "\nPostęp drogi do następnej stacji: " + Utilities.visualizeProgress(this.coveredCurrentPathDistance, this.currentPathDistance)
