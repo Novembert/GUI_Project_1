@@ -34,17 +34,14 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
     }
 
     public void runMultipleConnectionsCreator(String code, List<String> targetCodes) {
-        int count = 0;
-
         try {
             this.stationsMap.addMultipleConnections(code, targetCodes);
-            count++;
         } catch (StationNotFoundException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        System.out.println("Dodano " + count + " " + Utilities.getCorrectSingularOrPluralForm(count, "połączenie", "połączenia", "połączeń"));
+        System.out.println("Dodano połączenia");
     }
 
     public void initializeConnectingToMultipleSourceStations() {
@@ -55,19 +52,16 @@ public class ConnectionsCommandsReceiver extends MenuCommandsReceiver {
     }
 
     public void runConnectingToMultipleSourceStations(String targetCode, List<String> codes) {
-        int count = 0;
-
         try {
             for (String code : codes) {
                 this.stationsMap.addConnection(code, targetCode);
-                count++;
             }
         } catch (StationNotFoundException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        System.out.println("Dodano " + count + " " + Utilities.getCorrectSingularOrPluralForm(count, "połączenie", "połączenia", "połączeń"));
+        System.out.println("Dodano połączenia");
     }
 
     public void initializePrintPath() {

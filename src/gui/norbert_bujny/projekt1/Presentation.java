@@ -3,7 +3,6 @@ package gui.norbert_bujny.projekt1;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 public class Presentation {
     public static void main(String[] args) {
@@ -176,7 +175,7 @@ public class Presentation {
          *  Przyczepianie wagonu
          */
 
-        PassengerCar passengerCar = new PassengerCar(1000, 3000, true, false, 50, PassengerCarClass.SECOND);
+        PassengerCar passengerCar = new PassengerCar(0, 3000, true, false, 50, PassengerCarClass.SECOND);
         BuffetCar buffetCar = new BuffetCar(2000, 4500, CuisineType.INTERNATIONAL, false, true);
         RefrigeratorCar refrigeratorCar = new RefrigeratorCar(1300, 6000, WayToLoadCargo.SIDE_LOAD, "Lody", true, -20);
         FreightCar freightCar = new FreightCar(1200, 4600, WayToLoadCargo.TOP_LOAD, "Części samochodowe");
