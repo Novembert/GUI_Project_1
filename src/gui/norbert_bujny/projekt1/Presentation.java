@@ -76,7 +76,7 @@ public class Presentation {
          * Wylistowanie stacji
          */
 
-        System.out.println("\nWylistowanie stacji po dadniu trzech stacji");
+        System.out.println("\nWylistowanie stacji po dodaniu trzech stacji");
         stationsCommandsReceiver.printStationsList();
 
         /**
@@ -340,6 +340,9 @@ public class Presentation {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        veryFastTrain.setSpeed(210);
+        trainsCommandsReceiver.runTrain(veryFastTrain);
 
         appInstance.run();
     }
