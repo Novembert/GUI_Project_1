@@ -18,7 +18,6 @@ public class TrainRideAction implements Callable<Boolean> {
         threadTrain.setTrainRideState(TrainRideState.RUNNING);
 
         Station targetStation = threadUsedConnection.getTargetStation(threadTrain.getCurrentStation());
-        threadUsedConnection.setIsUsed(true);
         threadTrain.setCoveredCurrentPathDistance(0);
         threadTrain.setCurrentPathDistance(threadUsedConnection.getDistance());
 
@@ -26,12 +25,14 @@ public class TrainRideAction implements Callable<Boolean> {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                System.out.println("Błąd krytyczny");
                 throw new RuntimeException(e);
             }
 
             double diff = threadTrain.getKMhToKMsMultiplier() * threadTrain.getSpeed();
             threadTrain.setCoveredCurrentPathDistance(threadTrain.getCoveredCurrentPathDistance() + diff);
             threadTrain.setCoveredWholeTravelDistance(threadTrain.getCoveredWholeTravelDistance() + diff);
+
 
             try {
                 threadTrain.setSpeed(random.nextBoolean() ? threadTrain.getSpeed() - threadTrain.getSpeed() * 0.03 : threadTrain.getSpeed() + threadTrain.getSpeed() * 0.03);
@@ -47,9 +48,8 @@ public class TrainRideAction implements Callable<Boolean> {
         }
 
         threadTrain.setCurrentStation(targetStation);
-        threadUsedConnection.setIsUsed(false);
         threadTrain.setSpeed(100);
-
+        threadUsedConnection.setIsUsed(null);
 
         if (targetStation.equals(threadTrain.getTargetStation()) || targetStation.equals(threadTrain.getHomeStation())) {
             threadTrain.setTrainRideState(TrainRideState.ARRIVED_TO_FINAL_STATION);

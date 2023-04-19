@@ -19,6 +19,17 @@ public class StationsGraph {
         return this.stationsConnections;
     }
 
+    public Set<Connection> getAllStationsConnections() {
+        Set<Connection> connectionSet = new HashSet<>();
+        for (List<Connection> connectionList : this.stationsConnections.values()) {
+            for (Connection connection : connectionList) {
+                connectionSet.add(connection);
+            }
+        }
+
+        return connectionSet;
+    }
+
     public String getStationsList() {
         return this.stationsConnections
                 .keySet()

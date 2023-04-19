@@ -1,7 +1,5 @@
 package gui.norbert_bujny.projekt1;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 public class TrainsDirector implements Runnable {
@@ -23,14 +21,25 @@ public class TrainsDirector implements Runnable {
     }
 
     public void run() {
-        if (trainsCollection.getMap().values().isEmpty()) return;
-        for (Train t : trainsCollection.getMap().values()) {
-            if (t.getTrainRideState() == TrainRideState.READY_TO_GO ||
-                    t.getTrainRideState() == TrainRideState.READY_TO_START_NEW_TRAVEL ||
-                    t.getTrainRideState() == TrainRideState.ARRIVED_TO_STATION ||
-                    t.getTrainRideState() == TrainRideState.ARRIVED_TO_FINAL_STATION) {
-                t.tryToRun();
+        try {
+            if (trainsCollection.getMap().values().isEmpty()) return;
+
+            for (Connection connection : stationsMap.getAllStationsConnections()) {
+                connection.startTrainFromQueue();
             }
+
+            for (Train t : trainsCollection.getMap().values()) {
+                if (t.getTrainRideState() == TrainRideState.READY_TO_GO ||
+                        t.getTrainRideState() == TrainRideState.DIRECTED_TO_GO ||
+                        t.getTrainRideState() == TrainRideState.READY_TO_START_NEW_TRAVEL ||
+                        t.getTrainRideState() == TrainRideState.ARRIVED_TO_STATION ||
+                        t.getTrainRideState() == TrainRideState.ARRIVED_TO_FINAL_STATION) {
+                    t.tryToRun();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
     }
 }

@@ -1,6 +1,7 @@
 package gui.norbert_bujny.projekt1;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.List;
 
 public class TrainsReportGenerator implements Runnable {
@@ -34,9 +35,15 @@ public class TrainsReportGenerator implements Runnable {
     }
 
     public void run() {
+//        System.out.println("reportGenerator tick");
         if (trainsCollection.getMap().values().isEmpty()) return;
 
-        List<Train> trains = trainsCollection.getMap().values().stream().toList();
+        List<Train> trains = trainsCollection.getMap().values().stream().sorted(new Comparator<Train>() {
+            @Override
+            public int compare(Train t1, Train t2) {
+                return (int) Math.round((t1.getWholeTravelDistance() - t1.getCoveredWholeTravelDistance()) - (t2.getWholeTravelDistance() - t2.getCoveredWholeTravelDistance()));
+            }
+        }).toList();
         String result = "=================\n\n";
 
         for (Train train : trains) {

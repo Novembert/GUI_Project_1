@@ -176,8 +176,8 @@ public class Initializer {
             trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SZO"), stationsMap.searchStationByCode("KĄK"), "Zeus", 225000.25, 15, 7));
             trainsCollection.addItem(new Train(stationsMap.searchStationByCode("WRO"), stationsMap.searchStationByCode("BIE"), "Prometeusz", 195000.75, 14, 7));
 
-            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("ORZ"), stationsMap.searchStationByCode("WRO"), "Rakieta", 250000.00, 15, 5));
-            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("ORZ"), stationsMap.searchStationByCode("BAR"), "Tesla", 220000.00, 12, 7));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SUL"), stationsMap.searchStationByCode("WRO"), "Rakieta", 250000.00, 15, 5));
+            trainsCollection.addItem(new Train(stationsMap.searchStationByCode("ORZ"), stationsMap.searchStationByCode("STR"), "Tesla", 220000.00, 12, 7));
             trainsCollection.addItem(new Train(stationsMap.searchStationByCode("KOŁ"), stationsMap.searchStationByCode("GWI"), "Ferrari", 225000.25, 15, 7));
             trainsCollection.addItem(new Train(stationsMap.searchStationByCode("SUL"), stationsMap.searchStationByCode("MOG"), "Lamborghini", 225000.25, 15, 7));
             trainsCollection.addItem(new Train(stationsMap.searchStationByCode("BUK"), stationsMap.searchStationByCode("GWI"), "Bentley", 195000.75, 14, 7));

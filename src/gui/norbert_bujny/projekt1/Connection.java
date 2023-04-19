@@ -7,14 +7,14 @@ public class Connection implements Serializable {
     private Set<Station> stations;
     private Queue<Train> trainsQueue;
     private double distance;
-    private boolean isUsed;
+    private Train isUsed;
 
     public Connection(Station st1, Station st2, double distance) {
         this.stations = new HashSet<>();
         this.stations.add(st1);
         this.stations.add(st2);
         this.distance = distance;
-        this.isUsed = false;
+        this.isUsed = null;
         this.trainsQueue = new LinkedList<>();
     }
 
@@ -26,16 +26,20 @@ public class Connection implements Serializable {
         return this.distance;
     }
 
-    public void setIsUsed(Boolean isUsed) {
-        this.isUsed = isUsed;
-        if (!isUsed && !this.trainsQueue.isEmpty()) {
-            Train t = trainsQueue.poll();
-            t.setTrainRideState(TrainRideState.READY_TO_GO);
-            t.tryToRun();
+    public void setIsUsed(Train isUsedBy) {
+        synchronized (this) {
+            this.isUsed = isUsedBy;
         }
     }
 
-    public boolean getIsUsed() {
+    public void startTrainFromQueue() {
+        if (isUsed == null && !this.trainsQueue.isEmpty()) {
+            Train t = trainsQueue.poll();
+            t.setTrainRideState(TrainRideState.DIRECTED_TO_GO);
+        }
+    }
+
+    public Train getIsUsed() {
         return isUsed;
     }
 

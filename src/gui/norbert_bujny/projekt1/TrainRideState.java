@@ -12,6 +12,7 @@ public enum TrainRideState {
     WAITING_IN_QUEUE("Czeka w kolejce na dostęp do toru"),
     RUNNING("Jedzie"),
     READY_TO_GO("Gotowy do jazdy"),
+    DIRECTED_TO_GO("Wyznaczony do jazdy"),
     READY_TO_START_NEW_TRAVEL("Gotowy do rozpoczęcia trasy"),
     STOPPED("Zatrzymany w związku z awarią");
 

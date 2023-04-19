@@ -67,9 +67,8 @@ public class TrainCarsMap implements Serializable {
 
     public List<BaseCar> getCars(Train t) {
         try {
-            List<BaseCar> carsList = this.trainCarsMap.get(t);
-            return carsList;
-        } catch (NullPointerException e) {
+            return this.trainCarsMap.get(t);
+        } catch (Exception e) {
             return new ArrayList<>();
         }
     }
