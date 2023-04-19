@@ -1,8 +1,9 @@
 package gui.norbert_bujny.projekt1;
 
 import java.util.Random;
+import java.util.concurrent.Callable;
 
-public class TrainRideAction extends Thread {
+public class TrainRideAction implements Callable<Boolean> {
     Train threadTrain;
     Connection threadUsedConnection;
 
@@ -12,7 +13,7 @@ public class TrainRideAction extends Thread {
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         Random random = new Random();
         threadTrain.setTrainRideState(TrainRideState.RUNNING);
 
@@ -32,18 +33,29 @@ public class TrainRideAction extends Thread {
             threadTrain.setCoveredCurrentPathDistance(threadTrain.getCoveredCurrentPathDistance() + diff);
             threadTrain.setCoveredWholeTravelDistance(threadTrain.getCoveredWholeTravelDistance() + diff);
 
-            threadTrain.setSpeed(random.nextBoolean() ? threadTrain.getSpeed() - threadTrain.getSpeed() * 0.03 : threadTrain.getSpeed() + threadTrain.getSpeed() * 0.03);
+            try {
+                threadTrain.setSpeed(random.nextBoolean() ? threadTrain.getSpeed() - threadTrain.getSpeed() * 0.03 : threadTrain.getSpeed() + threadTrain.getSpeed() * 0.03);
+
+                if (threadTrain.getSpeed() > 200) {
+                    throw new RailroadHazard(threadTrain);
+                }
+            } catch (RailroadHazard rh) {
+                System.out.println(rh.getMessage());
+            }
+
+
         }
 
         threadTrain.setCurrentStation(targetStation);
         threadUsedConnection.setIsUsed(false);
         threadTrain.setSpeed(100);
 
-        threadTrain.executeQueuedActions();
+
         if (targetStation.equals(threadTrain.getTargetStation()) || targetStation.equals(threadTrain.getHomeStation())) {
             threadTrain.setTrainRideState(TrainRideState.ARRIVED_TO_FINAL_STATION);
         } else {
             threadTrain.setTrainRideState(TrainRideState.ARRIVED_TO_STATION);
         }
+        return true;
     }
 }

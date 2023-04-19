@@ -60,6 +60,12 @@ public class FreightCar extends BaseCar implements Loadable {
         };
     }
 
+    public void loadCargo(double newCargoWeight) {
+        double freeWeight = this.getGrossWeight() - this.getNetWeight();
+
+        setNetWeight(newCargoWeight + getNetWeight() > freeWeight ? getGrossWeight() : newCargoWeight + getNetWeight());
+    }
+
     public Command initUnloadCargo() {
         System.out.println("Zajęty udźwig: " + getNetWeight() + "/" + getGrossWeight());
 
@@ -72,6 +78,12 @@ public class FreightCar extends BaseCar implements Loadable {
                 setNetWeight(reducedNumber < 0 ? 0 : reducedNumber);
             }
         };
+    }
+
+    public void unloadCargo(double unloadWeight) {
+        double reducedNumber = getNetWeight() - unloadWeight;
+
+        setNetWeight(reducedNumber < 0 ? 0 : reducedNumber);
     }
 
     @Override

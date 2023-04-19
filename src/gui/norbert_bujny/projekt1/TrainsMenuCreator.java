@@ -27,7 +27,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(3, "Raport dot. pociągu", new Command() {
             @Override
             public void execute() {
-                receiver.printTrainReport();
+                receiver.initialisePrintTrainReport();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -35,7 +35,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(4, "Uruchom pociąg", new Command() {
             @Override
             public void execute() {
-                receiver.runTrain();
+                receiver.initialiseRunTrain();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -51,7 +51,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(6, "Dodaj pociąg", new Command() {
             @Override
             public void execute() {
-                receiver.addTrain();
+                receiver.initialiseAddTrain();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -59,7 +59,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(7, "Usuń pociąg", new Command() {
             @Override
             public void execute() {
-                receiver.deleteTrain();
+                receiver.initialiseDeleteTrain();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -67,7 +67,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(8, "Przyczep wagon", new Command() {
             @Override
             public void execute() {
-                receiver.attachCar();
+                receiver.initialiseAttachCar();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -75,7 +75,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(9, "Odczep wagon", new Command() {
             @Override
             public void execute() {
-                receiver.detachCar();
+                receiver.initialiseDetachCar();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -83,7 +83,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(10, "Załaduj wagon", new Command() {
             @Override
             public void execute() {
-                receiver.loadCar();
+                receiver.initialiseLoadCar();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -91,7 +91,7 @@ public final class TrainsMenuCreator extends GenericMenuCreator<TrainsCommandsRe
         mainMenu.menuItems.add(new MenuItem(11, "Wyładuj wagon", new Command() {
             @Override
             public void execute() {
-                receiver.unloadCar();
+                receiver.initialiseUnloadCar();
                 receiver.switchSubmenu("main");
             }
         }));

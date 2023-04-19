@@ -18,7 +18,7 @@ public class SavesMenuCreator extends GenericMenuCreator<SavesMenuReceiver> {
         savesMenu.menuItems.add(new MenuItem(2, "Nowy zapis", new Command() {
             @Override
             public void execute() {
-                receiver.saveState();
+                receiver.initSaveState();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -26,7 +26,7 @@ public class SavesMenuCreator extends GenericMenuCreator<SavesMenuReceiver> {
         savesMenu.menuItems.add(new MenuItem(3, "Nadpisz zapis", new Command() {
             @Override
             public void execute() {
-                receiver.overrideState();
+                receiver.initOverrideState();
                 receiver.switchSubmenu("main");
             }
         }));
@@ -34,7 +34,7 @@ public class SavesMenuCreator extends GenericMenuCreator<SavesMenuReceiver> {
         savesMenu.menuItems.add(new MenuItem(4, "Wczytaj zapis", new Command() {
             @Override
             public void execute() {
-                receiver.readState();
+                receiver.initReadState();
                 receiver.switchSubmenu("main");
             }
         }));

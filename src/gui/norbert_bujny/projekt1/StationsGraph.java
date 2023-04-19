@@ -52,7 +52,8 @@ public class StationsGraph {
 
     public void removeStationFromList(Station station) {
         for (Station savedStation : stationsConnections.keySet()) {
-            if (stationsConnections.get(savedStation).contains(station)) {
+            Connection connection = this.findConnectionFromTo(savedStation, station);
+            if (connection != null) {
                 this.removeConnection(savedStation, station);
             }
         }
@@ -86,7 +87,8 @@ public class StationsGraph {
     }
 
     public void removeConnection(Station station, Station targetStation) {
-        this.stationsConnections.get(station).remove(targetStation);
+        this.stationsConnections.get(station).remove(this.findConnectionFromTo(station, targetStation));
+        this.stationsConnections.get(targetStation).remove(this.findConnectionFromTo(targetStation, station));
     }
 
     public List<Connection> findPath(String code, String targetStationCode) throws StationNotFoundException, PathNotFoundException {

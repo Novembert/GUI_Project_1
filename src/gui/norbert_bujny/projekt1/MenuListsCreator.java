@@ -11,13 +11,13 @@ public final class MenuListsCreator {
     CarsMenuCreator carsMenuCreator;
     SavesMenuCreator savesMenuCreator;
 
-    public MenuListsCreator(App appReference) {
-        this.mmCreator = new MainMenuCreator(new MenuCommandsReceiver(appReference));
-        this.tmCreator = new TrainsMenuCreator(new TrainsCommandsReceiver(appReference));
-        this.smCreator = new StationsMenuCreator(new StationsCommandsReceiver(appReference));
-        this.cmCreator = new ConnectionsMenuCreator(new ConnectionsCommandsReceiver(appReference));
-        this.carsMenuCreator = new CarsMenuCreator(new CarsCommandsReceiver(appReference));
-        this.savesMenuCreator = new SavesMenuCreator(new SavesMenuReceiver(appReference));
+    public MenuListsCreator(App appReference, Map<String, MenuCommandsReceiver> menuCommandsReceiverMap) {
+        this.mmCreator = new MainMenuCreator(menuCommandsReceiverMap.get("main"));
+        this.tmCreator = new TrainsMenuCreator((TrainsCommandsReceiver) menuCommandsReceiverMap.get("trains"));
+        this.smCreator = new StationsMenuCreator((StationsCommandsReceiver) menuCommandsReceiverMap.get("stations"));
+        this.cmCreator = new ConnectionsMenuCreator((ConnectionsCommandsReceiver) menuCommandsReceiverMap.get("connections"));
+        this.carsMenuCreator = new CarsMenuCreator((CarsCommandsReceiver) menuCommandsReceiverMap.get("cars"));
+        this.savesMenuCreator = new SavesMenuCreator((SavesMenuReceiver) menuCommandsReceiverMap.get("saves"));
     }
 
     public Map<String, MenuList> createMenuLists() {

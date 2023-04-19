@@ -62,6 +62,11 @@ public class PassengerCar extends BaseCar implements Loadable {
         };
     }
 
+    public void loadCargo(int newPassengers) {
+        takenSeats = newPassengers + takenSeats > seats ? seats : takenSeats + newPassengers;
+        setNetWeight(expectedPassengerWeight * takenSeats);
+    }
+
     public Command initUnloadCargo() {
         System.out.println("Zajęte miejsca: " + takenSeats + "/" + this.seats);
 
@@ -75,6 +80,13 @@ public class PassengerCar extends BaseCar implements Loadable {
                 setNetWeight(expectedPassengerWeight * takenSeats);
             }
         };
+    }
+
+    public void unloadCargo(int unloadPassengers) {
+        int reducedNumber = this.takenSeats - unloadPassengers;
+
+        takenSeats = reducedNumber < 0 ? 0 : reducedNumber;
+        setNetWeight(expectedPassengerWeight * takenSeats);
     }
 
     private void initializeCar() {

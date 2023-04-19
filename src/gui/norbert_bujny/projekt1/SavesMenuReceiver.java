@@ -18,24 +18,39 @@ public class SavesMenuReceiver extends MenuCommandsReceiver {
         this.trainCarsMap = appReference.getTrainCarsMap();
     }
 
-    public void saveState() {
+    public void initSaveState() {
         String saveName;
         do {
             saveName = Utilities.handleUserRequiredInput("Podaj nazwę zapisu: ");
         } while (this.saves.findIfSaveExists(saveName));
 
 
+        this.runSaveState(saveName);
+    }
+
+    public void runSaveState(String saveName) {
         this.saves.createNewSave(saveName, stationsMap, carsCollection, trainsCollection, trainCarsMap);
     }
 
-    public void readState() {
+    public void initReadState() {
         List<String> savesNames = this.saves.listExistingSaves();
+        String saveName = Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames);
 
-        this.saves.readSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames));
+        this.runReadState(saveName);
     }
 
-    public void overrideState() {
+    public void runReadState(String saveName) {
+        this.saves.readSave(saveName);
+    }
+
+    public void initOverrideState() {
         List<String> savesNames = this.saves.listExistingSaves();
-        this.saves.overrideSave(Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames), stationsMap, carsCollection, trainsCollection, trainCarsMap);
+        String saveName = Utilities.handleUserRequiredStringListInput("Wybierz zapis (podaj odpowiadającą mu liczbę): ", savesNames);
+
+        this.runOverrideState(saveName);
+    }
+
+    public void runOverrideState(String saveName) {
+        this.saves.overrideSave(saveName, stationsMap, carsCollection, trainsCollection, trainCarsMap);
     }
 }

@@ -1,6 +1,8 @@
 package gui.norbert_bujny.projekt1;
 
 import java.sql.Time;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -16,12 +18,22 @@ public final class App {
     private TrainsReportGenerator trainsReportGenerator;
     private Saves saves;
     private Menu menu;
+    private Map<String, MenuCommandsReceiver> commandsReceiverMap;
 
     private App() {
     }
 
     private void initializeMenus() {
-        MenuListsCreator mlc = new MenuListsCreator(this);
+        this.commandsReceiverMap = new HashMap<>();
+
+        this.commandsReceiverMap.put("main", new MenuCommandsReceiver(this));
+        this.commandsReceiverMap.put("trains", new TrainsCommandsReceiver(this));
+        this.commandsReceiverMap.put("stations", new StationsCommandsReceiver(this));
+        this.commandsReceiverMap.put("connections", new ConnectionsCommandsReceiver(this));
+        this.commandsReceiverMap.put("cars", new CarsCommandsReceiver(this));
+        this.commandsReceiverMap.put("saves", new SavesMenuReceiver(this));
+
+        MenuListsCreator mlc = new MenuListsCreator(this, commandsReceiverMap);
         this.menu = new Menu(mlc.createMenuLists());
     }
 
@@ -79,6 +91,10 @@ public final class App {
 
     public TrainCarsMap getTrainCarsMap() {
         return TrainCarsMap.getInstance();
+    }
+
+    public Map<String, MenuCommandsReceiver> getCommandsReceiverMap() {
+        return commandsReceiverMap;
     }
 
     private void runScheduledTasks() {

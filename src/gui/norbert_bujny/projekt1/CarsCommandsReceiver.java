@@ -27,10 +27,8 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
 
     public void initializeCarCopier() {
         try {
-            BaseCar carToCopy = null;
-            carToCopy = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
-            BaseCar copiedCar = this.runCarCopier(carToCopy);
-            System.out.println("Skopiowano wagon. ID wagonu: " + copiedCar.getID());
+            BaseCar carToCopy = this.carsCollection.getItemWithPrompt("Podaj ID wagonu");
+            this.runCarCopier(carToCopy);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -39,6 +37,7 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
     public BaseCar runCarCopier(BaseCar carToCopy) {
         BaseCar copiedCar = carToCopy.clone();
         this.carsCollection.addItem(copiedCar);
+        System.out.println("Skopiowano wagon. ID wagonu: " + copiedCar.getID());
         return copiedCar;
     }
 
@@ -55,5 +54,6 @@ public class CarsCommandsReceiver extends MenuCommandsReceiver {
     public void runCarDelete(BaseCar carToDelete) {
         this.carsCollection.deleteItem(carToDelete.getID());
         TrainCarsMap.getInstance().removeCar(carToDelete);
+        System.out.println("Usunięto wagon");
     }
 }

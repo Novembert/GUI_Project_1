@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TrainsReportGenerator implements Runnable {
     private TrainsCollection trainsCollection;
-    private File outputFile = new File("output/report.txt");
+    private File outputFile = new File("output/AppState.txt");
 
     public TrainsReportGenerator(TrainsCollection trainsCollection) {
         this.trainsCollection = trainsCollection;

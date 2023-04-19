@@ -98,6 +98,6 @@ public abstract class BaseCar implements IdRepresentedItem, Serializable {
     }
 
     public String toShortString() {
-        return "[" + this.ID + "] " + this.carType + (this.needsElectricity ? "[EL]" : "");
+        return "[" + this.ID + "] " + this.carType + (this.needsElectricity ? " [EL]" : "");
     }
 }

@@ -43,7 +43,6 @@ public class Train implements IdRepresentedItem, Serializable {
      * other data
      */
     private final double KMhToKMsMultiplier = 0.0002777778;
-    private Queue<Command> actionsQueue;
 
     public Train(Station homeStation, Station targetStation, String name, double maxWeight, int maxCarsCount, int maxElectricCarsCount) {
         this.homeStation = homeStation;
@@ -51,7 +50,6 @@ public class Train implements IdRepresentedItem, Serializable {
         this.currentStation = homeStation;
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
         this.speed = 100;
-        this.actionsQueue = new LinkedList<>();
         this.name = name;
         this.maxWeight = maxWeight;
         this.maxCarsCount = maxCarsCount;
@@ -65,7 +63,6 @@ public class Train implements IdRepresentedItem, Serializable {
         this.currentStation = homeStation;
         this.ID = IdGenerator.resolveID(IdFieldsNamesEnum.TRAIN_ID.toString());
         this.speed = 100;
-        this.actionsQueue = new LinkedList<>();
         this.trainRideState = TrainRideState.CREATED;
         this.initializeTrain();
     }
@@ -100,7 +97,7 @@ public class Train implements IdRepresentedItem, Serializable {
         }
     }
 
-    public void attachCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException {
+    public void attachCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException, AlreadyAddedException {
         if (this.canAddCar(car)) TrainCarsMap.getInstance().attachCar(this, car);
     }
 
@@ -186,13 +183,15 @@ public class Train implements IdRepresentedItem, Serializable {
         return sum;
     }
 
-    private boolean canAddCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException {
+    private boolean canAddCar(BaseCar car) throws TooManyCarsException, TooManyElectricCarsException, TooHeavyCarException, AlreadyAddedException {
         if (this.getCars().size() >= this.maxCarsCount)
             throw new TooManyCarsException();
         if (car.getNeedsElectricity() && this.getElectricCarsCount() >= this.maxElectricCarsCount)
             throw new TooManyElectricCarsException();
         if (car.getGrossWeight() >= this.maxWeight - this.sumCarsGrossWeight())
             throw new TooHeavyCarException();
+        if (this.getCars().contains(car))
+            throw new AlreadyAddedException();
         return true;
     }
 
@@ -237,12 +236,9 @@ public class Train implements IdRepresentedItem, Serializable {
                     }
                 default:
                     break;
+
             }
         }
-    }
-
-    public void addAction(Command newActionCommand) {
-        this.actionsQueue.add(newActionCommand);
     }
 
     private Queue<Connection> generateStationsQueue(TrainRideDirection direction) {
@@ -271,13 +267,6 @@ public class Train implements IdRepresentedItem, Serializable {
     public String toString() {
         return this.getTrainInfo() +
                 ",\n" + this.getCarsInfo(false);
-    }
-
-    public void executeQueuedActions() {
-        while (!this.actionsQueue.isEmpty()) {
-            Command currentCommand = this.actionsQueue.poll();
-            currentCommand.execute();
-        }
     }
 
     private String getTrainInfo() {
@@ -313,6 +302,7 @@ public class Train implements IdRepresentedItem, Serializable {
         result += "\nStan trasy: " + this.trainRideState + "\n";
         if (this.trainRideState == TrainRideState.RUNNING) {
             result += "Aktualny odcinek: " + Arrays.asList(this.currentPathStationsQueue.peek());
+            result += "\nAktualna prędkość: " + speed;
             result += "\nPostęp drogi do następnej stacji: " + Utilities.visualizeProgress(this.coveredCurrentPathDistance, this.currentPathDistance)
                     + ",\n" + "Postęp całej trasy: " + Utilities.visualizeProgress(this.coveredWholeTravelDistance, this.wholeTravelDistance);
         } else {

@@ -16,7 +16,7 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         this.trainCarsMap = appReference.getTrainCarsMap();
     }
 
-    public void addTrain() {
+    public void initialiseAddTrain() {
         Station homeStation = null;
         Station targetStation = null;
 
@@ -51,71 +51,105 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
             }
         } while (targetStation == null);
 
-        Train newTrain = new Train(homeStation, targetStation);
-        this.trainsCollection.addItem(newTrain);
-        this.trainCarsMap.addTrain(newTrain);
-        System.out.println("Dodano pociąg");
+        this.runAddTrain(homeStation, targetStation);
     }
 
-    public void attachCar() {
+    public void runAddTrain(Station homeStation, Station targetStation) {
+        Train newTrain = new Train(homeStation, targetStation);
+        this.addTrainToCollections(newTrain);
+    }
+
+    public void addTrainToCollections(Train newTrain) {
+        this.trainsCollection.addItem(newTrain);
+        this.trainCarsMap.addTrain(newTrain);
+        System.out.println("Dodano pociąg. ID pociągu: " + newTrain.getID());
+    }
+
+    public void initialiseAttachCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
             BaseCar car = this.carsCollection.getNonAttachedCarWithPrompt("Podaj ID wagonu");
 
-            train.attachCar(car);
+            this.runAttachCar(train, car);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void runAttachCar(Train t, BaseCar c) {
+        try {
+            t.attachCar(c);
             System.out.println("Przyczepiono wagon");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void detachCar() {
+    public void initialiseDetachCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
             BaseCar car = this.carsCollection.getAttachedCarWithPrompt("Podaj ID wagonu");
 
-            train.detachCar(car);
-            System.out.println("Odczepiono wagon");
+            this.runDetachCar(train, car);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void runDetachCar(Train t, BaseCar c) {
+        t.detachCar(c);
+        System.out.println("Odczepiono wagon");
     }
 
     public void printTrainsList() {
         System.out.println(this.trainsCollection.getItemsList());
     }
 
-    public void printTrainReport() {
+    public void initialisePrintTrainReport() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
 
-            System.out.println(train.getReport());
+            this.runPrintTrainReport(train);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void deleteTrain() {
+    public void runPrintTrainReport(Train t) {
+        System.out.println(t.getReport());
+    }
+
+    public void initialiseDeleteTrain() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-            this.trainCarsMap.removeTrain(train);
-            trainsCollection.deleteItem(train.getID());
-            System.out.println("Usunięto pociąg");
+
+            this.runDeleteTrain(train);
         } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void runTrain() {
+    public void runDeleteTrain(Train t) {
+        this.trainCarsMap.removeTrain(t);
+        trainsCollection.deleteItem(t.getID());
+        System.out.println("Usunięto pociąg");
+    }
+
+    public void initialiseRunTrain() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
-            try {
-                train.runTravel();
-                System.out.println("Uruchomiono pociąg");
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+
+            this.runTrain(train);
         } catch (ItemNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void runTrain(Train t) {
+        try {
+            t.runTravel();
+            System.out.println("Uruchomiono pociąg");
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -138,27 +172,35 @@ public class TrainsCommandsReceiver extends MenuCommandsReceiver {
         System.out.println("Uruchomiomo " + count + " " + Utilities.getCorrectSingularOrPluralForm(count, "pociąg", "pociągi", "pociągów"));
     }
 
-    public void loadCar() {
+    public void initialiseLoadCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
             Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu", train);
 
-            Command action = car.initLoadCargo();
-            action.execute();
+            this.runLoadCar(car);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void unloadCar() {
+    public void runLoadCar(Loadable c) {
+        Command action = c.initLoadCargo();
+        action.execute();
+    }
+
+    public void initialiseUnloadCar() {
         try {
             Train train = this.trainsCollection.getItemWithPrompt("Podaj ID pociągu");
             Loadable car = this.carsCollection.getLoadableCarWithPrompt("Podaj ID wagonu", train);
 
-            Command action = car.initUnloadCargo();
-            action.execute();
+            this.runUnloadCar(car);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void runUnloadCar(Loadable c) {
+        Command action = c.initUnloadCargo();
+        action.execute();
     }
 }
