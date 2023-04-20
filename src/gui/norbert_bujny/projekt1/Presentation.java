@@ -12,7 +12,7 @@ public class Presentation {
         /**
          * Wagony
          */
-        System.out.println("*** Wagony ***");
+        System.out.println("*** Wagony ***\n");
 
         CarsCommandsReceiver carsCommandsReceiver = (CarsCommandsReceiver) appInstance.getCommandsReceiverMap().get("cars");
         CarsCollection carsCollection = appInstance.getCarsCollection();
@@ -28,7 +28,7 @@ public class Presentation {
          * wylistowanie wagonów
          */
 
-        System.out.println("Wylistowanie wagonu po dodaniu nowego wagonu:\n");
+        System.out.println("\nWylistowanie wagonu po dodaniu nowego wagonu:\n");
         carsCommandsReceiver.printCarsList();
 
         /**
@@ -53,7 +53,7 @@ public class Presentation {
          * Stacje
          */
 
-        System.out.println("\n\n*** Stacje ***");
+        System.out.println("\n\n*** Stacje ***\n");
 
         StationsCommandsReceiver stationsCommandsReceiver = (StationsCommandsReceiver) appInstance.getCommandsReceiverMap().get("stations");
         StationsGraph stationsGraph = appInstance.getStationsMap();
@@ -100,7 +100,7 @@ public class Presentation {
          * Połączenia stacji
          */
 
-        System.out.println("\n\n*** Połączenia stacji ***");
+        System.out.println("\n\n*** Połączenia stacji ***\n");
 
         ConnectionsCommandsReceiver connectionsCommandsReceiver = (ConnectionsCommandsReceiver) appInstance.getCommandsReceiverMap().get("connections");
 
@@ -125,7 +125,7 @@ public class Presentation {
          * Wylistowanie stacji po zmianach
          */
 
-        System.out.println("\nStacje po dodaniu nowych stacji i połączeń");
+        System.out.println("\nStacje po dodaniu nowych stacji i połączeń\n");
         stationsCommandsReceiver.printStationsList();
 
         /**
@@ -139,7 +139,7 @@ public class Presentation {
          * Pociągi
          */
 
-        System.out.println("\n\n*** Pociągi ***");
+        System.out.println("\n\n*** Pociągi ***\n");
 
         TrainsCommandsReceiver trainsCommandsReceiver = (TrainsCommandsReceiver) appInstance.getCommandsReceiverMap().get("trains");
         TrainsCollection trainsCollection = appInstance.getTrainsCollection();
@@ -209,7 +209,7 @@ public class Presentation {
             trainsCommandsReceiver.runAttachCar(intercityBatory, freightCar);
         }
 
-        System.out.println("\n\nLista pociągów po przyłączeniu wagonów");
+        System.out.println("\n\nLista pociągów po przyłączeniu wagonów\n");
         trainsCommandsReceiver.printTrainsList();
 
         /**
@@ -221,7 +221,7 @@ public class Presentation {
             trainsCommandsReceiver.runDetachCar(intercityBatory, refrigeratorCar);
         }
 
-        System.out.println("\n\nLista pociągów po odłączeniu wagonów");
+        System.out.println("\n\nLista pociągów po odłączeniu wagonów\n");
         trainsCommandsReceiver.printTrainsList();
 
         /**
@@ -316,6 +316,13 @@ public class Presentation {
          */
 
         trainsCommandsReceiver.runTrain(intercityBatory);
+
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         System.out.println("Raport o pociągu po uruchomieniu go:  \n");
         trainsCommandsReceiver.runPrintTrainReport(intercityBatory);

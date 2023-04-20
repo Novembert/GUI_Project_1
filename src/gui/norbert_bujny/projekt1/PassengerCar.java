@@ -71,7 +71,7 @@ public class PassengerCar extends BaseCar implements Loadable {
         System.out.println("Zajęte miejsca: " + takenSeats + "/" + this.seats);
 
         int unloadPassengers = Utilities.handleUserRequiredInputInt("Ilu pasażerów ma wysiąść?");
-        int reducedNumber = this.seats - unloadPassengers;
+        int reducedNumber = this.takenSeats - unloadPassengers;
 
         return new Command() {
             @Override
